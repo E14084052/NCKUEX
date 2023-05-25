@@ -24,12 +24,14 @@
  }
 
 .view{
-    padding: 0 10vw;
-    padding-top: 7vw;
     background-color: rgba(18, 18, 18);
     opacity: 1;
-    transition: opacity 0.5s ease-in-out;
     overflow-y: auto;
+}
+
+.view #body{
+    padding: 0 10vw;
+    padding-top: 7vw;
 }
 
 .view header{
@@ -68,13 +70,13 @@
     text-align: center;
 }
 
-.view #uploader{
+.view #upload{
     display: flex;
     justify-content: flex-end;
     align-items: center
 }
 
-.view #uploader p{
+.view #upload p{
     font-family: "Source Han Sans Light", sans-serif;
     color: white;
     font-size: 1vw;

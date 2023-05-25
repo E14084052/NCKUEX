@@ -2,8 +2,19 @@ $(document).ready(function() {
 /* ////////////////////////////////////// */
 //收合側欄
 
-$('#bar').click(function() {
-  $('aside, #right, #leftfix').toggleClass('active');
+$('#barbutton').click(function() {
+  if($(this).hasClass('active')){
+    $('#barbutton').toggleClass('active');
+    setTimeout(function() {
+      $('aside, #right, #leftfix').toggleClass('active');
+  }, 100);
+  }
+  else{
+    $('aside, #right, #leftfix').toggleClass('active');
+    setTimeout(function() {
+      $('#barbutton').toggleClass('active');
+    }, 200);
+  }
 });
 
 /* ////////////////////////////////////// */
@@ -25,6 +36,7 @@ $(document).click(function(event) {
 
 let collegeTarget = $('#college li:first').text();
 let departmentTarget = $('#department li:first').text();
+console.log(departmentTarget);
 let gradeTarget;
 let lectureTarget;
 let clasTarget;
@@ -87,6 +99,7 @@ updateContent('department')
 function updateContent(target) {
   $.get('/update', {
     json: target,
+    col: collegeTarget,
     dep: departmentTarget,
     grade: gradeTarget
   }, (data) => {
@@ -204,8 +217,7 @@ $('.userpic').click(function(){
 });
 
 $(document).on('click', '.document', function(event) {
-  showModal('view');
-  console.log(this);
+  showModal('view',  $(this).attr('id'));
 });
 
 $(document).on('click', '.view #quit', function() {
@@ -216,11 +228,12 @@ $(document).on('click', '.view #userpic img', function() {
   showModal('personal_page');
 });
 
-function showModal(page) {
+function showModal(page, id) {
   $('html').css('cursor', 'wait');
   let modal = $('<div>').attr('id', 'modal').addClass(page);
   $('body').append(modal);
   $.get('/page', {
+    id: id,
     page: page
   }, (data) => {
     modal.html(data);

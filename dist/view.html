@@ -8,50 +8,50 @@
   </head>
 
   <body>
+    <div id="body">
     <header>
       <div id="title">
         <h1>
-          電磁學(二)
         </h1>
       </div>
 
       <div id="info">
         <div id="text">
           <div style="margin-right: 2vw;">
-            <p>教師 | 楊慶龍</p>
+            <p id="teac"></p>
           </div>
           <div style="margin-right: 2vw;">
-            <p>年份 | 111-2</p>
+            <p id="year"></p>
           </div>
           <div>
-            <p>類別 | 大考</p>
+            <p id="clas"></p>
           </div>
         </div>
 
         <div id="infonull" style="width: 41vw;"></div>
 
-        <div id="uploader">
+        <div id="upload">
           <div>
             <p>uploaded by</p>
           </div>
           <div id="userpic">
-            <img src="./img/小恐龍.png">
+            <img src="">
           </div>
           <div>
-            <p>電機小恐龍</p>
+            <p id="up"></p>
           </div>
         </div>
       </div>
-
     </header>
 
     <main>
-      <div id="file">
-        <img src="./img/03_考卷.jpg">
-      </div>
+      <iframe id="file" width="100%" height="200%"
+        src="./upload/magnet2_exam2_.pdf">
+      </iframe>
+      
       <div id="right">
         <div>
-        <div id="download"><a href="#"><img src="./img/04_download.png"><p>下載</p></a></div>
+        <div id="download"><a href=""><img src="./img/04_download.png"><p>下載</p></a></div>
         <div style="height: 2vw;"></div>
         <div id="like"><img src="./img/05_like.png"><p>讚賞</p></div>
       </div></div>
@@ -60,5 +60,6 @@
     <section>
       <div id="quit"><img src="./img/08_quit.png"></div>
     </section>
+    </div>
   </body>
 </html>

@@ -47,7 +47,7 @@ app.get('/documentSelect', (req, res) => {
     let HTML = '';
     for (let id in data) {
       if (data[id].lec == req.query.lec && data[id].clas == req.query.clas) {
-        HTML += htmlWriter(data[id]);
+        HTML += htmlWriter(data[id], id);
     }}
     if (HTML == '') {
       HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
@@ -69,7 +69,7 @@ app.get('/documentSearch', (req, res) => {
       data[id].clas.includes(req.query.search)||
       data[id].up.includes(req.query.search)
         ) {
-        HTML += htmlWriter(data[id]);
+        HTML += htmlWriter(data[id], id);
     }}
     if (HTML == '') {
       HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
@@ -78,55 +78,22 @@ app.get('/documentSearch', (req, res) => {
   });
 });
 
-function htmlWriter(id){
+function htmlWriter(data, id){
     let HTML = '';
-      HTML += '<div class="document" id=' +  id + '>' +
-      '<div class="year container">' +
-        '<h4>' + id.year + '</h4></div>' +
-      '<div class="teacher container">' +
-        '<h4>' + id.teac + '</h4></div>' +
-      '<div class="name container">' +
-        '<h4>' + id.clas + ' | ' + id.name + '</h4></div>' +
-      '<div class="like container"><img src="./img/like.png">' +
-        '<h4>' + id.like + '</h4></div>' +
-      '<div class="uploader container"><img src="./img/userpic/' + id.pic + '">' +
-        '<p>' + id.up + '</p>' +
-        '<img class="award" src="./img/check.png" style="opacity: ' + id.award + ';"></div>' +
-      '<div class="tag container"><div>' +
-          '<div class="tagA" style="display: ' + (id.tagA === "1" ? "flex" : "none") + '; padding: .1vw;">' +
-            '<img src="./img/check.png"><p>內容完整</p></div>' +
-          '<div class="tagB" style="display: ' + (id.tagB === "1" ? "flex" : "none") + '; padding: .1vw;">' +
-            '<img src="./img/check.png"><p>解題過程</p></div></div></div></div>';
+      HTML += '<div class="document" id="' + id + '">' +
+      '<div class="year container"><h4>' + data.year + '</h4></div>' +
+      '<div class="teacher container"><h4>' + data.teac + '</h4></div>' +
+      '<div class="like container"><img src="./img/like.png"><h4>' + data.like + '</h4></div>' +
+      '<div class="name container"><h4>' + data.clas + '</h4><p>|</p><h4>' + data.name +'</h4></div>' +
+      '<div class="tag container">' +
+              '<img style="display:' + (data.tagA == 1 ? 'block': 'none')  + '" src="./img/check1.png">' +
+              '<img style="display:' + (data.tagB == 1 ? 'block': 'none') + '" src="./img/check2.png"></div>' +
+      '<div class="uploader container"><img src="./img/userpic/' + data.pic + '"><h4>' + data.up + '</h4>' +
+          '<img class="award" src="./img/fire.png" style="opacity:' + (data.award == 1 ? 1:0) + ';"></div></div>';
     return HTML
   }
 
 /* ////////////////////////////////////// */
-
-app.get('/updateDepartment', (req, res) => {
-  fs.readFile('./department.json', 'utf8', function(err, data) {
-    if (err) throw err;
-    data = JSON.parse(data);
-    let HTML = '';
-    for (let id in data) {
-      if (data[id].col == req.query.col) {
-        HTML += '<li>' + data[id].name + '</li>';
-    }}
-    res.send(HTML);
-  });
-});
-
-app.get('/updateLecture', (req, res) => {
-  fs.readFile('./lecture.json', 'utf8', function(err, data) {
-    if (err) throw err;
-    data = JSON.parse(data);
-    let HTML = '';
-    for (let id in data) {
-      if (data[id].dep == req.query.dep && (req.query.grade == null || data[id].grade == req.query.grade)) {
-        HTML += '<li>' + data[id].name + '</li>';
-    }}
-    res.send(HTML);
-  });
-});
 
 app.get('/update', (req, res) => {
   fs.readFile('./' + req.query.json + '.json', 'utf8', function(err, data) {
@@ -138,7 +105,7 @@ app.get('/update', (req, res) => {
         if (data[id].col == req.query.col) {
           HTML += '<li>' + data[id].name + '</li>';
       }}
-      if (req.query.dep != null){
+      else{
         if (data[id].dep == req.query.dep && (req.query.grade == null || data[id].grade == req.query.grade)) {
           HTML += '<li>' + data[id].name + '</li>';
       }}
@@ -149,29 +116,26 @@ app.get('/update', (req, res) => {
 
 /* ////////////////////////////////////// */
 
-app.get('/data', (req, res) => {
-  res.send('hello idiot');
-});
+import cheerio from 'cheerio';
 
 app.get('/page', (req, res) => {
-  fs.readFile('./dist/' + req.query.page + '.html', 'utf8', function(err, data) {
+  fs.readFile('./dist/' + req.query.page + '.html', 'utf8', function(err, html) {
     if (err) throw err;
-    res.send(data);
+    fs.readFile('./document.json', 'utf8', function(err, data) {
+      if (err) throw err;
+      data = JSON.parse(data);
+      const $ = cheerio.load(html);
+      $('#title h1').text(data[req.query.id].lec);
+      $('#teac').text('教師 | ' + data[req.query.id].teac);
+      $('#year').text('年份 | ' + data[req.query.id].year);
+      $('#clas').text('類別 | ' + data[req.query.id].clas);
+      $('#userpic img').attr('src', './img/userpic/' + data[req.query.id].pic);
+      $('#up').text(data[req.query.id].up);
+      $('#file img').attr('src', data[req.query.id].url);
+      $('#download a').attr('href', data[req.query.id].url);
+      res.send($.html());
+    });
   })
-});
-
-app.get('/downloadLink', (req, res) => {
-  fs.readFile('./document.json', 'utf8', function(err, data) {
-    if (err) throw err;
-    data = JSON.parse(data);
-    let url;
-    for (let id in data) {
-      if (data[id].name == req.query.name){
-        url = data[id].url;
-        break;
-    }}
-    res.send(url);
-  });
 });
 
 /* ////////////////////////////////////// */
