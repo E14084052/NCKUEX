@@ -95,21 +95,28 @@ function htmlWriter(data, id){
 
 /* ////////////////////////////////////// */
 
-app.get('/update', (req, res) => {
+app.get('/updatelecture', (req, res) => {
   fs.readFile('./' + req.query.json + '.json', 'utf8', function(err, data) {
     if (err) throw err;
     data = JSON.parse(data);
     let HTML = '';
     for (let id in data) {
-      if (req.query.col != null){
-        if (data[id].col == req.query.col) {
-          HTML += '<li>' + data[id].name + '</li>';
-      }}
-      else{
-        if (data[id].dep == req.query.dep && (req.query.grade == null || data[id].grade == req.query.grade)) {
-          HTML += '<li>' + data[id].name + '</li>';
-      }}
-    }
+      if (data[id].dep == req.query.dep && (req.query.grade == null || data[id].grade == req.query.grade)) {
+        HTML += '<li>' + data[id].name + '</li>';
+    }}
+    res.send(HTML);
+  });
+});
+
+app.get('/updatedepartment', (req, res) => {
+  fs.readFile('./' + req.query.json + '.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    data = JSON.parse(data);
+    let HTML = '';
+    for (let id in data) {
+      if (data[id].col == req.query.col) {
+        HTML += '<li>' + data[id].name + '</li>';
+    }}
     res.send(HTML);
   });
 });
@@ -140,6 +147,13 @@ app.get('/view', (req, res) => {
 
 app.get('/preview_personal', (req, res) => {
   fs.readFile('./dist/preview_personal.html', 'utf8', function(err, html) {
+    if (err) throw err;
+    res.send(html);
+  })
+});
+
+app.get('/personal_page', (req, res) => {
+  fs.readFile('./dist/personal_page.html', 'utf8', function(err, html) {
     if (err) throw err;
     res.send(html);
   })

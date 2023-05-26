@@ -96,7 +96,7 @@ updateContent('lecture')
 updateContent('department')
 
 function updateContent(target) {
-  $.get('/update', {
+  $.get('/update' + target + '', {
     json: target,
     col: collegeTarget,
     dep: departmentTarget,
@@ -208,7 +208,7 @@ function login(){
 
 $('.userpic').click(function(){
   if ($('#text').hasClass('active')){
-    showModal('preview_personal');
+    showModal('personal_page', '');
   }
 });
 
