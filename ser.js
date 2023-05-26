@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/file", (req, res) => {
   const icon = Buffer.from(req.body.FileContent, "base64");
   // 其他格式直接寫入檔案
-  fs.writeFile(`./upload/${req.body.imageId}`, icon, (err) => {
+  fs.writeFile(`./dist/upload/${req.body.imageId}`, icon, (err) => {
     if (err) {
       console.error(err);
       res.sendStatus(500);
