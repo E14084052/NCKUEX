@@ -118,8 +118,8 @@ app.get('/update', (req, res) => {
 
 import cheerio from 'cheerio';
 
-app.get('/page', (req, res) => {
-  fs.readFile('./dist/' + req.query.page + '.html', 'utf8', function(err, html) {
+app.get('/view', (req, res) => {
+  fs.readFile('./dist/view.html', 'utf8', function(err, html) {
     if (err) throw err;
     fs.readFile('./document.json', 'utf8', function(err, data) {
       if (err) throw err;
@@ -132,13 +132,33 @@ app.get('/page', (req, res) => {
       $('#userpic img').attr('src', './img/userpic/' + data[req.query.id].pic);
       $('#up').text(data[req.query.id].up);
       $('#file img').attr('src', data[req.query.id].url);
-      $('#download a').attr('href', data[req.query.id].url);
+      $('#download a').attr('href', './upload/' + data[req.query.id].url);
       res.send($.html());
     });
   })
 });
 
+app.get('/preview_personal', (req, res) => {
+  fs.readFile('./dist/preview_personal.html', 'utf8', function(err, html) {
+    if (err) throw err;
+    res.send(html);
+  })
+});
+
 /* ////////////////////////////////////// */
+
+app.get('/like', (req, res) => {
+  fs.readFile('./document.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    data = JSON.parse(data);
+    data[req.query.id].like = parseInt(data[req.query.id].like) + 1;
+    fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function(err) {
+      if (err) throw err;
+      res.send('Like count updated!');
+    });
+  });
+});
+
 
 
 

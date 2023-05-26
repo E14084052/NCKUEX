@@ -36,7 +36,6 @@ $(document).click(function(event) {
 
 let collegeTarget = $('#college li:first').text();
 let departmentTarget = $('#department li:first').text();
-console.log(departmentTarget);
 let gradeTarget;
 let lectureTarget;
 let clasTarget;
@@ -207,16 +206,16 @@ function login(){
   });
 }
 
-/* ////////////////////////////////////// */
-//預覽視窗
-
 $('.userpic').click(function(){
   if ($('#text').hasClass('active')){
-    showModal('personal_page');
+    showModal('preview_personal');
   }
 });
 
-$(document).on('click', '.document', function(event) {
+/* ////////////////////////////////////// */
+//預覽視窗
+
+$(document).on('click', '.document', function() {
   showModal('view',  $(this).attr('id'));
 });
 
@@ -225,16 +224,20 @@ $(document).on('click', '.view #quit', function() {
 });
 
 $(document).on('click', '.view #userpic img', function() {
-  showModal('personal_page');
+  showModal('preview_personal', '');
+});
+
+
+$(document).on('click', '.preview_personal #null', function() {
+  closeModal();
 });
 
 function showModal(page, id) {
   $('html').css('cursor', 'wait');
-  let modal = $('<div>').attr('id', 'modal').addClass(page);
+  let modal = $('<div>').attr('id', id).addClass('modal').addClass(page);
   $('body').append(modal);
-  $.get('/page', {
+  $.get('/' + page + '' , {
     id: id,
-    page: page
   }, (data) => {
     modal.html(data);
   });
@@ -251,15 +254,19 @@ function showModal(page, id) {
 }
 
 function closeModal() {
-  $('#modal').css('opacity', 0);
+  $('.modal').last().css('opacity', 0);
   setTimeout(function() {
-    $('#modal').removeClass('').html('').remove();
+    $('.modal').last().removeClass('').html('').remove();
   }, 500);
 }
-
 /* ////////////////////////////////////// */
 //奇怪的東西
 
+$(document).on('click', '.view #like', function() {
+  $.get('/like' , {
+    id: $('.modal.view').attr('id')
+  }, () => {});
+});
 
 /* ////////////////////////////////////// */
 /* ------------------------------------------------------------------------------------------------------------------------- */
