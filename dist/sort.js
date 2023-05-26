@@ -44,7 +44,7 @@ $('#college .content').on('click', 'li', function(event) {
   collegeTarget = event.target.innerText;
   $('#college .header li').text(collegeTarget);
   $('#department .header li').text('-請選擇-');
-  documentreset()
+  documentReset()
   updateContent('department')
   if(collegeTarget=='通識課程'){$('#grade').css('display', 'none')}
   else{$('#grade').css('display', 'flex')}
@@ -53,7 +53,7 @@ $('#college .content').on('click', 'li', function(event) {
 $('#department .content').on('click', 'li', function(event) {
   departmentTarget = event.target.innerText;
   $('#department .header li').text(departmentTarget);
-  documentreset()
+  documentReset()
   updateContent('lecture')
 });
 
@@ -79,12 +79,13 @@ $('#clas .content').on('click', 'li', function(event) {
   documentSelect();
 });
 
-function documentreset() {
+function documentReset() {
   gradeTarget = undefined;
   lectureTarget = undefined;
   clasTarget = undefined;
   $('#grade li.active, #clas li.active').removeClass('active');
   $('#lecture .header li, #clas .header li').text('-請選擇-');
+  $('#lecture .content ul').html('<li></li>');
   $('#documentcontainer').empty().css('display', 'none');
   $('.bot').css('opacity', '.25');
 }
@@ -102,7 +103,7 @@ function updateContent(target) {
     dep: departmentTarget,
     grade: gradeTarget
   }, (data) => {
-    $('#lecture .content ul').html(data);
+    $('#' + target + ' .content ul').html(data);
   });
 }
 
@@ -158,10 +159,7 @@ function documentSelect() {
     });
 }}
 
-/* ////////////////////////////////////// */
-//搜索功能
-
-$('#search-box').on('input', function() {
+function documentSearch() {
   if ($('#search-box').val() != '') {
     $('#documentcontainer').css('display', 'block');
     $('.bot').css('opacity', '1');
@@ -170,47 +168,21 @@ $('#search-box').on('input', function() {
     }, (data) => {
       $('#documentcontainer').html(data);
     });
-}});
+}}
+
+/* ////////////////////////////////////// */
+//搜索功能
+
+$('#search-box').on('input', function() {
+  documentSearch()
+});
 
 $('#search-box').on('blur', function() {
   if ($('#search-box').val() === '') {
     $('#documentcontainer').empty().css('display', 'none');
     $('.bot').css('opacity', '.25');
+    $('html').css('cursor', '');
 }});
-
-/* ////////////////////////////////////// */
-//假登入
-
-$('#login').click(function(){
-  if ($('#login p').text() == '登 入') {
-    login();
-  }
-  setTimeout(() => {
-    $('#text').toggleClass('active');
-    $('#login p').text($('#login p').text() == '登 入' ? '登 出' : '登 入');
-    if ($('#login p').text() == '登 入') {
-      $('#user p').text('');
-      $('#user .userpic img').attr('src', '');
-    }
-  }, 100);
-})
-
-let userid = 1;
-
-function login(){
-  $.getJSON('user.json', function(data) {
-    if (data[userid]) {
-      $('#user p').text(data[userid].name);
-      $('#user .userpic img').attr('src', './img/userpic/' + data[userid].pic);
-    }
-  });
-}
-
-$('.userpic').click(function(){
-  if ($('#text').hasClass('active')){
-    showModal('personal_page', '');
-  }
-});
 
 /* ////////////////////////////////////// */
 //預覽視窗
@@ -263,9 +235,51 @@ function closeModal() {
 //奇怪的東西
 
 $(document).on('click', '.view #like', function() {
+  $('html').css('cursor', 'wait');
   $.get('/like' , {
     id: $('.modal.view').attr('id')
   }, () => {});
+  setTimeout(function() {
+    $('#documentcontainer').empty()
+    documentSelect()
+    documentSearch()
+    $('html').css('cursor', '');
+    $('.view #like img').toggleClass('active');
+  }, 100);
+});
+
+/* ////////////////////////////////////// */
+//假登入
+
+$('#login').click(function(){
+  if ($('#login p').text() == '登 入') {
+    login();
+  }
+  setTimeout(() => {
+    $('#text').toggleClass('active');
+    $('#login p').text($('#login p').text() == '登 入' ? '登 出' : '登 入');
+    if ($('#login p').text() == '登 入') {
+      $('#user p').text('');
+      $('#user .userpic img').attr('src', '');
+    }
+  }, 100);
+})
+
+let userid = 1;
+
+function login(){
+  $.getJSON('user.json', function(data) {
+    if (data[userid]) {
+      $('#user p').text(data[userid].name);
+      $('#user .userpic img').attr('src', './img/userpic/' + data[userid].pic);
+    }
+  });
+}
+
+$('.userpic').click(function(){
+  if ($('#text').hasClass('active')){
+    showModal('personal_page', '');
+  }
 });
 
 /* ////////////////////////////////////// */

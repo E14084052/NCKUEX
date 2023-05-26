@@ -114,14 +114,21 @@
     width: 62vw;
 }
 
-.view #download{
+.view #download, .view #like{
     width: 2.5vw;
 }
-
-.view #like{
-    width: 2.5vw;
+.view #right img{
+    transition: .3s ease-in-out;
+} 
+.view #right img:hover{
+    transform: scale(1.2);
 }
-
+.view #like img.active{
+    transform: scale(-1);
+}
+.view #like img.active:hover{
+    transform: scale(-1.2);
+}
 a{
     text-decoration: none;
 }
