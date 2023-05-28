@@ -193,7 +193,9 @@ $(document).on('click', '.document', function() {
 
 $(document).on('click', '.view #quit', function() {
   closeModal();
+  quitView = true;
 });
+let quitView = false;
 
 $(document).on('click', '.view #userpic img', function() {
   showModal('preview_personal', '');
@@ -279,6 +281,8 @@ async function renderPDF(url) {
     const pdf = await pdfjsLib.getDocument(url).promise;
 
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+      if (quitView) {break}
+
       const canvasElement = $('<canvas>').attr('id', pageNumber);
       $('.view #file').append(canvasElement);
 
