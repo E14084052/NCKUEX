@@ -1,5 +1,10 @@
-<div id=null></div>
-<img src="./E-個人化頁面.png">
+<div class="modal preview_personal"><!-- 要使用預覽功能時刪除這個 -->
+  <div id="null"></div>
+  <div id="body">
+    <!-- 主要內容 -->
+    <img src="./E-個人化頁面.png">
+  </div>
+</div>
 <style>
   .preview_personal{
     display: flex;
@@ -9,12 +14,17 @@
     padding: 0;
     height: 100%;
   }
-  .preview_personal img{
+  .modal{
+    width: 100%;
     height: 100%;
-    width: auto;
+  }
+  .preview_personal div#body{
+    height: 100%;
+    width: 63%;
   }
   .preview_personal div#null{
     height: 100%;
     width: 37%;
   }
+  /* 以上css勿動 */
 </style>
