@@ -199,12 +199,12 @@ aside.sort #left{
     width: 3vw;
     height: 3vw;
     border-radius: 10vw;
-    border: .1vw solid #81D6FA;
+    border: .15vw solid #81D6FA;
     background-color: #181818;
     z-index: 5;
     background-image: url(./img/arrow.png);
     background-position: center center;
-    background-size: cover;
+    background-size: 3.5vw 3.5vw;
     transition: .3s ease-in-out;
 }
 .sort #barbutton.active{

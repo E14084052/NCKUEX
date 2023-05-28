@@ -83,7 +83,7 @@ function htmlWriter(data, id){
       HTML += '<div class="document" id="' + id + '">' +
       '<div class="year container"><h4>' + data.year + '</h4></div>' +
       '<div class="teacher container"><h4>' + data.teac + '</h4></div>' +
-      '<div class="like container"><img src="./img/like.png"><h4>' + data.like + '</h4></div>' +
+      '<div class="like container"><img src="./img/like.png"><h4>' + data.like.count + '</h4></div>' +
       '<div class="name container"><h4>' + data.clas + '</h4><p>|</p><h4>' + data.name +'</h4></div>' +
       '<div class="tag container">' +
               '<img style="display:' + (data.tagA == 1 ? 'block': 'none')  + '" src="./img/check1.png">' +
@@ -132,15 +132,15 @@ app.get('/view', (req, res) => {
       if (err) throw err;
       data = JSON.parse(data);
       const $ = cheerio.load(html);
-      $('#title h1').text(data[req.query.id].lec);
-      $('#teac').text('教師 | ' + data[req.query.id].teac);
-      $('#year').text('年份 | ' + data[req.query.id].year);
-      $('#clas').text('類別 | ' + data[req.query.id].clas);
-      $('#userpic img').attr('src', './img/userpic/' + data[req.query.id].pic);
-      $('#up').text(data[req.query.id].up);
-      $('#file img').attr('src', data[req.query.id].url);
-      $('#download a').attr('href', './upload/' + data[req.query.id].url);
-      res.send($.html());
+      $('#title h1').text(data[req.query.doc].lec);
+      $('#teac').text('教師 | ' + data[req.query.doc].teac);
+      $('#year').text('年份 | ' + data[req.query.doc].year);
+      $('#clas').text('類別 | ' + data[req.query.doc].clas);
+      $('#userpic img').attr('src', './img/userpic/' + data[req.query.doc].pic);
+      $('#up').text(data[req.query.doc].up);
+      $('#download a').attr('href', './upload/' + data[req.query.doc].url);
+      let like = data[req.query.doc].like.userIds.includes(req.query.userID);
+      res.send([$.html(), like]);
     });
   })
 });
@@ -161,17 +161,27 @@ app.get('/personal_page', (req, res) => {
 
 /* ////////////////////////////////////// */
 
+
 app.get('/like', (req, res) => {
-  fs.readFile('./document.json', 'utf8', function(err, data) {
+  fs.readFile('document.json', 'utf8', (err, data) => {
     if (err) throw err;
     data = JSON.parse(data);
-    data[req.query.id].like = parseInt(data[req.query.id].like) + 1;
-    fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function(err) {
-      if (err) throw err;
-      res.send('Like count updated!');
-    });
+    if (data[req.query.doc].like.userIds.includes(req.query.userID)) {
+      res.send('已讚')
+     }
+    else{
+      data[req.query.doc].like.userIds.push(req.query.userID);
+      data[req.query.doc].like.count = data[req.query.doc].like.userIds.length;
+      fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function(err) {
+        if (err) throw err;
+      });
+      res.send('按讚成功')
+    }
   });
 });
+
+
+
 
 
 

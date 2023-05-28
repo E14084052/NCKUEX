@@ -204,15 +204,11 @@ $(document).on('click', '.preview_personal #null', function() {
   closeModal();
 });
 
-function showModal(page, id) {
+function showModal(page, doc) {
   $('html').css('cursor', 'wait');
-  let modal = $('<div>').attr('id', id).addClass('modal').addClass(page);
+  let modal = $('<div>').attr('id', doc).addClass('modal').addClass(page);
   $('body').append(modal);
-  $.get('/' + page + '' , {
-    id: id,
-  }, (data) => {
-    modal.html(data);
-  });
+  Page(page, doc)
   setTimeout(function() {
     modal.css('opacity', 1);
     $('html').css('cursor', '');
@@ -220,7 +216,7 @@ function showModal(page, id) {
   modal.attr('tabindex', '0').focus();
   modal.on('keydown', function(e) {
     if (e.key == 'Escape' || e.key == ' ') {
-      closeModal();
+    closeModal();
   }});
   $('[data-target="upload"]').on('change', handleFileUpload);
 }
@@ -231,14 +227,38 @@ function closeModal() {
     $('.modal').last().removeClass('').html('').remove();
   }, 500);
 }
-/* ////////////////////////////////////// */
-//奇怪的東西
 
-$(document).on('click', '.view #like', function() {
+function Page(page, doc) {
+  if (page == 'view') {viewPage(page, doc);}
+}
+
+function viewPage(page, doc){
+  $.get('/' + page + '' , {
+    userID: userID,
+    doc: doc
+  }, (data) => {
+    $('#' + doc + '.modal').html(data[0]);
+    if (data[1]) {$('.view #like img').toggleClass('active');}
+    else {
+      $('.view #like').css('cursor', 'pointer').click(like).hover(
+        function(){$(this).css('transform', 'scale(1.2)')},
+        function(){$(this).css('transform', 'scale(1)')}
+      )
+    }
+    renderPDF($('#download a').attr('href'));
+  });
+}
+/* ////////////////////////////////////// */
+//倒讚幫
+
+function like() {
   $('html').css('cursor', 'wait');
   $.get('/like' , {
-    id: $('.modal.view').attr('id')
-  }, () => {});
+    userID: userID,
+    doc: $('.modal.view').attr('id')
+  }, (data) => {
+    console.log(data);
+  });
   setTimeout(function() {
     $('#documentcontainer').empty()
     documentSelect()
@@ -246,7 +266,45 @@ $(document).on('click', '.view #like', function() {
     $('html').css('cursor', '');
     $('.view #like img').toggleClass('active');
   }, 100);
-});
+}
+
+/* ////////////////////////////////////// */
+//pdf
+
+window['pdfjs-dist/build/pdf'].GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+async function renderPDF(url) {
+  $('.view').css('cursor', 'wait');
+  try {
+    const pdf = await pdfjsLib.getDocument(url).promise;
+
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+      const canvasElement = $('<canvas>').attr('id', pageNumber);
+      $('.view #file').append(canvasElement);
+
+      const page = await pdf.getPage(pageNumber);
+
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      const context = canvasElement[0].getContext('2d');
+      canvasElement[0].height = viewport.height;
+      canvasElement[0].width = viewport.width;
+
+      const renderContext = {
+        canvasContext: context,
+        viewport: viewport
+      };
+      await page.render(renderContext).promise;
+    }
+
+    console.log('PDF rendering completed');
+  } catch (error) {
+  }
+  $('.view').css('cursor', '');
+  $('.view #load').css('display', 'none');
+  $('.view #file').css('display', 'flex');
+}
 
 /* ////////////////////////////////////// */
 //假登入
@@ -265,7 +323,7 @@ $('#login').click(function(){
   }, 100);
 })
 
-let userid = 1;
+let userID = 88;
 
 function login(){
   $.getJSON('user.json', function(data) {

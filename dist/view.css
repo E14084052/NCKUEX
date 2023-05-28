@@ -96,14 +96,24 @@
     justify-content: center;
 }
 
-.view #file{
-    width: 90%;
+.view #file, .view #load{
+    width: 80%;
     height: 95vw;
     margin-top: 3vw;
-    margin-left:8vw;
+}
+.view #load{
+    background-image: url(./img/小恐龍.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    opacity: .5;
+}
+.view #file{
+    height: auto;
+    display: none;
+    flex-direction: column;
 }
 
-.view #right{
+.view #right, .view #left{
     width: 10%;
     height: 95vw;
     margin-top: 4vw;
@@ -119,15 +129,12 @@
 }
 .view #right img{
     transition: .3s ease-in-out;
-} 
-.view #right img:hover{
-    transform: scale(1.2);
+}
+.view #like, .view #like img{
+    transition: .3s ease-in-out;
 }
 .view #like img.active{
-    transform: scale(-1);
-}
-.view #like img.active:hover{
-    transform: scale(-1.2);
+    background-color: #81D6FA;
 }
 a{
     text-decoration: none;
@@ -147,7 +154,7 @@ a{
     right: 7vw;
 }
 
-.view #download, .view #like, .view #quit, .view #userpic img{
+.view #download, .view #quit, .view #userpic img{
     cursor: pointer;
     z-index: 100;
 }
