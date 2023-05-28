@@ -185,6 +185,41 @@ $('#search-box').on('blur', function() {
 }});
 
 /* ////////////////////////////////////// */
+/* ------------------------------------------------------------------------------------------------------------------------- */
+//假登入
+
+$('#login').click(function(){
+  if ($('#login p').text() == '登 入') {
+    login();
+  }
+  setTimeout(() => {
+    $('#text').toggleClass('active');
+    $('#login p').text($('#login p').text() == '登 入' ? '登 出' : '登 入');
+    if ($('#login p').text() == '登 入') {
+      $('#user p').text('');
+      $('#user .userpic img').attr('src', '');
+    }
+  }, 100);
+})
+
+function login(){
+  $.getJSON('user.json', function(data) {
+    if (data[userid]) {
+      $('#user p').text(data[userid].name);
+      $('#user .userpic img').attr('src', './img/userpic/' + data[userid].pic);
+    }
+  });
+}
+
+$('.userpic').click(function(){
+  if ($('#text').hasClass('active')){
+    showModal('personal_page', '');
+  }
+});
+
+let userID = 88;
+
+/* ////////////////////////////////////// */
 //預覽視窗
 
 $(document).on('click', '.document', function() {
@@ -309,40 +344,6 @@ async function renderPDF(url) {
   $('.view #load').css('display', 'none');
   $('.view #file').css('display', 'flex');
 }
-
-/* ////////////////////////////////////// */
-//假登入
-
-$('#login').click(function(){
-  if ($('#login p').text() == '登 入') {
-    login();
-  }
-  setTimeout(() => {
-    $('#text').toggleClass('active');
-    $('#login p').text($('#login p').text() == '登 入' ? '登 出' : '登 入');
-    if ($('#login p').text() == '登 入') {
-      $('#user p').text('');
-      $('#user .userpic img').attr('src', '');
-    }
-  }, 100);
-})
-
-let userID = 88;
-
-function login(){
-  $.getJSON('user.json', function(data) {
-    if (data[userid]) {
-      $('#user p').text(data[userid].name);
-      $('#user .userpic img').attr('src', './img/userpic/' + data[userid].pic);
-    }
-  });
-}
-
-$('.userpic').click(function(){
-  if ($('#text').hasClass('active')){
-    showModal('personal_page', '');
-  }
-});
 
 /* ////////////////////////////////////// */
 /* ------------------------------------------------------------------------------------------------------------------------- */
