@@ -146,11 +146,12 @@ main.sort{
     height: 40vw;
 }
 .sort #left, .sort #leftfix{
-    width: 17.8%;
+    width: 22%;
+    background-color: #181818;
     text-align: center;
 }
 .sort #right{
-    width: 78%;
+    width: 75%;
 }
 .sort .top{
     height: 10%;
@@ -186,6 +187,7 @@ aside.sort{
 }
 aside.sort #left{
     width: 85%;
+    transition: .5s ease-in-out;
 }
 .sort #barcontainer{
     width: 15%;
@@ -208,14 +210,15 @@ aside.sort #left{
     transition: .3s ease-in-out;
 }
 .sort #barbutton.active{
-    transform: translateX(10%) rotate(180deg);
+    background-image: url(./img/arrow2.png);
+    transform: rotate(180deg);
 }
 .sort #barbutton:hover{
     cursor: pointer;
     transform: scale(1.2);
 }
 .sort #barbutton.active:hover{
-    transform: translateX(50%) rotate(180deg) scale(1.35);
+    transform: rotate(180deg) scale(1.2);
 }
 .sort .bar{
     background-color: #81D6FA;
@@ -224,16 +227,18 @@ aside.sort #left{
     margin-top: 2vw;
     position: absolute;
 }
+aside.sort.active #left{
+    transform: translateX(-20%);
+}
 aside.sort.active{
-    transform: translateX(-110%);
+    transform: translateX(-90%);
 }
 .sort #leftfix{
     transition: .5s ease-in-out;
-    margin-left: 3vw;
+    margin-left: 3%;
 }
 .sort #leftfix.active{
-    width: 0;
-    transform: translateX(-110%);
+    width: 5%;
 }
 .sort #right{
     transition: .5s ease-in-out;

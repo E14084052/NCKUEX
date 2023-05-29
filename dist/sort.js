@@ -227,8 +227,10 @@ $(document).on('click', '.document', function() {
 });
 
 $(document).on('click', '.view #quit', function() {
-  closeModal();
+  $('.view #file, .view #load').css('transition', '.3s ease-in-out').css('opacity', '0');
   quitView = true;
+  closeModal();
+  setTimeout(function() {quitView = false},500);
 });
 let quitView = false;
 
@@ -275,13 +277,9 @@ function viewPage(page, doc){
     doc: doc
   }, (data) => {
     $('#' + doc + '.modal').html(data[0]);
-    if (data[1]) {$('.view #like img').toggleClass('active');}
-    else {
-      $('.view #like').css('cursor', 'pointer').click(like).hover(
-        function(){$(this).css('transform', 'scale(1.2)')},
-        function(){$(this).css('transform', 'scale(1)')}
-      )
-    }
+    Interactive('like', data[1])
+    Interactive('rate', false)
+    viewScroll()
     renderPDF($('#download a').attr('href'));
   });
 }
@@ -303,6 +301,17 @@ function like() {
     $('html').css('cursor', '');
     $('.view #like img').toggleClass('active');
   }, 100);
+}
+
+function Interactive(target, iff){
+  console.log($('.view #' + target + ' img'));
+  if (iff) {$('.view #' + target + ' img').toggleClass('active');}
+  else {
+    $('.view #' + target).css('cursor', 'pointer').click(like).hover(
+      function(){$(this).css('transform', 'scale(1.2)')},
+      function(){$(this).css('transform', 'scale(1)')}
+    )
+  }
 }
 
 /* ////////////////////////////////////// */
@@ -346,6 +355,25 @@ async function renderPDF(url) {
 }
 
 /* ////////////////////////////////////// */
+//奇怪的東西
+
+function viewScroll(){
+  let fixed = false
+  $('.view').on('scroll', function() {
+    var scroll = $(this).scrollTop();
+    var offset = $('.view #right').offset().top;
+    if (scroll > offset) {
+      if (!fixed){
+        fixed = true;
+        $('.view #right').addClass('fixed');
+      }
+    } else {
+      fixed = false;
+      $('.view #right').removeClass('fixed');
+    }
+  });
+}
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /*From 宗宗*/
 

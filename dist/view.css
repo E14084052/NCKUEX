@@ -23,9 +23,11 @@
     padding: 0;
  }
 
+ a{
+    text-decoration: none;
+}
+
 .view{
-    background-color: rgba(18, 18, 18);
-    opacity: 1;
     overflow-y: auto;
 }
 
@@ -52,12 +54,14 @@
 .view #info{
     display: flex;
     justify-content: center;
+    padding: 0 1%;
     height: 3vw;
     padding-bottom: 0.6vw;
     border-bottom: 0.2vw solid #81D6FA;
 }
 
 .view #text{
+    width: 50%;
     display: flex;
     justify-content: flex-start;
     align-items: center
@@ -71,6 +75,7 @@
 }
 
 .view #upload{
+    width: 50%;
     display: flex;
     justify-content: flex-end;
     align-items: center
@@ -93,17 +98,18 @@
 
 .view main{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .view #file, .view #load{
     width: 80%;
-    height: 95vw;
     margin-top: 3vw;
 }
 .view #load{
+    height: 36vw;
     background-image: url(./img/小恐龍.png);
-    background-position: top center;
+    background-position: center;
+    background-size: cover;
     background-repeat: no-repeat;
     opacity: .5;
 }
@@ -111,33 +117,30 @@
     height: auto;
     display: none;
     flex-direction: column;
+    position: relative;
 }
 
 .view #right, .view #left{
     width: 10%;
-    height: 95vw;
-    margin-top: 4vw;
     display: flex;
     justify-content: center;
+    margin-top: 1.5vw;
+    transition: .3s ease-in-out;
 }
+
+.view #right.fixed {
+    position: fixed;
+    left: 80%;
+    top: 5vh;
+}
+
 .view #file img{
     width: 62vw;
 }
 
-.view #download, .view #like{
+.view #right div{
     width: 2.5vw;
-}
-.view #right img{
-    transition: .3s ease-in-out;
-}
-.view #like, .view #like img{
-    transition: .3s ease-in-out;
-}
-.view #like img.active{
-    background-color: #81D6FA;
-}
-a{
-    text-decoration: none;
+    margin-top: 2vw;
 }
 
 .view #right p{
@@ -157,4 +160,16 @@ a{
 .view #download, .view #quit, .view #userpic img{
     cursor: pointer;
     z-index: 100;
+}
+
+.view #right div, .view #right img, .view #quit{
+    transition: .3s ease-in-out;
+}
+
+.view #right img.active{
+    background-color: #81D6FA;
+}
+
+.view #quit:hover, .view #download:hover{
+    transform: scale(1.2);
 }
