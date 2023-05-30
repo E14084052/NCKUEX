@@ -69,7 +69,7 @@ app.get('/documentSearch', (req, res) => {
       data[id].clas.includes(req.query.search)||
       data[id].up.includes(req.query.search)
         ) {
-        HTML += htmlWriter(data[id], id);
+      HTML += htmlWriter(data[id], id)
     }}
     if (HTML == '') {
       HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
@@ -79,19 +79,21 @@ app.get('/documentSearch', (req, res) => {
 });
 
 function htmlWriter(data, id){
-    let HTML = '';
-      HTML += '<div class="document" id="' + id + '">' +
-      '<div class="year container"><h4>' + data.year + '</h4></div>' +
-      '<div class="teacher container"><h4>' + data.teac + '</h4></div>' +
-      '<div class="like container"><img src="./img/like.png"><h4>' + data.like.count + '</h4></div>' +
-      '<div class="name container"><h4>' + data.clas + '</h4><p>|</p><h4>' + data.name +'</h4></div>' +
-      '<div class="tag container">' +
-              '<img style="display:' + (data.tagA == 1 ? 'block': 'none')  + '" src="./img/check1.png">' +
-              '<img style="display:' + (data.tagB == 1 ? 'block': 'none') + '" src="./img/check2.png"></div>' +
-      '<div class="uploader container"><img src="./img/userpic/' + data.pic + '"><h4>' + data.up + '</h4>' +
-          '<img class="award" src="./img/fire.png" style="opacity:' + (data.award == 1 ? 1:0) + ';"></div></div>';
-    return HTML
-  }
+  const html = fs.readFileSync('./dist/html/document.html', 'utf8');
+  const $ = cheerio.load(html);
+  $('.document').attr('id', id);
+  $('.year h4').text(data.year);
+  $('.teacher h4').text(data.teac);
+  $('.like h4').text(data.like.count);
+  $('.name h4:eq(0)').text(data.clas);
+  $('.name h4:eq(1)').text(data.name);
+  $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA == 1 ? 'block': 'none'));
+  $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB == 1 ? 'block': 'none'));
+  $('.uploader img:eq(0)').attr('src', './img/userpic/' + data.pic);
+  $('.uploader h4').text(data.up);
+  $('.uploader img:eq(1)').attr('style', 'opacity:' + (data.award == 1 ? 1:0));
+  return $.html()
+}
 
 /* ////////////////////////////////////// */
 

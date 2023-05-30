@@ -217,7 +217,7 @@ $('.userpic').click(function(){
   }
 });
 
-let userID = 88;
+let userID = 85465468;
 
 /* ////////////////////////////////////// */
 //預覽視窗
@@ -268,25 +268,55 @@ function closeModal() {
 }
 
 function Page(page, doc) {
-  if (page == 'view') {viewPage(page, doc);}
+  if (page == 'view') {viewPage(doc);}
 }
 
-function viewPage(page, doc){
-  $.get('/' + page + '' , {
+function viewPage(doc){
+  $.get('/view' , {
     userID: userID,
     doc: doc
   }, (data) => {
     $('#' + doc + '.modal').html(data[0]);
-    Interactive('like', data[1])
-    Interactive('rate', false)
+    Interactive(data[1])
     viewScroll()
-    renderPDF($('#download a').attr('href'));
+    renderPDF($('#download a').attr('href'), doc);
   });
 }
+
+/* ////////////////////////////////////// */
+//滾軸
+
+function viewScroll(){
+  let fixed = false
+  $('.view').on('scroll', function() {
+    var scroll = $(this).scrollTop();
+    var offset = $('.view #right').offset().top;
+    if (scroll > offset) {
+      if (!fixed){
+        fixed = true;
+        $('.view #right').addClass('fixed');
+      }
+    } else {
+      fixed = false;
+      $('.view #right').removeClass('fixed');
+    }
+  });
+}
+
 /* ////////////////////////////////////// */
 //倒讚幫
 
-function like() {
+function Interactive(iff){
+  if (iff) {$('.view #like img').toggleClass('active');}
+  else {
+    $('.view #like').css('cursor', 'pointer').hover(
+      function(){$(this).css('transform', 'scale(1.2)')},
+      function(){$(this).css('transform', 'scale(1)')}
+    )
+  }
+}
+
+$(document).on('click', '.view #like', function() {
   $('html').css('cursor', 'wait');
   $.get('/like' , {
     userID: userID,
@@ -295,23 +325,34 @@ function like() {
     console.log(data);
   });
   setTimeout(function() {
-    $('#documentcontainer').empty()
-    documentSelect()
-    documentSearch()
+    $('#documentcontainer').empty();
+    documentSelect();
+    documentSearch();
     $('html').css('cursor', '');
     $('.view #like img').toggleClass('active');
   }, 100);
-}
+})
 
-function Interactive(target, iff){
-  console.log($('.view #' + target + ' img'));
-  if (iff) {$('.view #' + target + ' img').toggleClass('active');}
-  else {
-    $('.view #' + target).css('cursor', 'pointer').click(like).hover(
-      function(){$(this).css('transform', 'scale(1.2)')},
-      function(){$(this).css('transform', 'scale(1)')}
-    )
+/* ////////////////////////////////////// */
+//五星好評
+
+$(document).on('click', '.view #rate', function() {
+  $('.view #rate').addClass('active');
+  rateStar('A');
+  rateStar('B');
+})
+
+$(document).click(function(event) {
+  if (!$(event.target).closest('.view #rate').length) {
+    $('.view #rate').removeClass('active');
   }
+})
+
+function rateStar(tar){
+  $('.view #rate' + tar).on('click', '.star', function() {
+    $('.view #rate' + tar + ' .star').removeClass('active');
+    $(this).toggleClass('active');
+  });
 }
 
 /* ////////////////////////////////////// */
@@ -319,8 +360,8 @@ function Interactive(target, iff){
 
 window['pdfjs-dist/build/pdf'].GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-async function renderPDF(url) {
-  $('.view').css('cursor', 'wait');
+async function renderPDF(url, doc) {
+  $('#' + doc + '.view').css('cursor', 'wait');
   try {
     const pdf = await pdfjsLib.getDocument(url).promise;
 
@@ -328,7 +369,7 @@ async function renderPDF(url) {
       if (quitView) {break}
 
       const canvasElement = $('<canvas>').attr('id', pageNumber);
-      $('.view #file').append(canvasElement);
+      $('#' + doc + '.view #file').append(canvasElement);
 
       const page = await pdf.getPage(pageNumber);
 
@@ -347,31 +388,13 @@ async function renderPDF(url) {
     }
 
     console.log('PDF rendering completed');
+    $('#' + doc + '.view #load').css('display', 'none');
+    $('#' + doc + '.view #file').css('display', 'flex');
   } catch (error) {
+    $('#' + doc + '.view #load').css('display', 'none');
+    $('#' + doc + '.view #fail').css('display', 'flex');
   }
-  $('.view').css('cursor', '');
-  $('.view #load').css('display', 'none');
-  $('.view #file').css('display', 'flex');
-}
-
-/* ////////////////////////////////////// */
-//奇怪的東西
-
-function viewScroll(){
-  let fixed = false
-  $('.view').on('scroll', function() {
-    var scroll = $(this).scrollTop();
-    var offset = $('.view #right').offset().top;
-    if (scroll > offset) {
-      if (!fixed){
-        fixed = true;
-        $('.view #right').addClass('fixed');
-      }
-    } else {
-      fixed = false;
-      $('.view #right').removeClass('fixed');
-    }
-  });
+  $('#' + doc + '.view').css('cursor', '');
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
