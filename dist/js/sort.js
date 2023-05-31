@@ -217,7 +217,7 @@ $('.userpic').click(function(){
   }
 });
 
-let userID = 85465468;
+let userID = 8546548;
 
 /* ////////////////////////////////////// */
 //預覽視窗
@@ -322,15 +322,15 @@ $(document).on('click', '.view #like', function() {
     userID: userID,
     doc: $('.modal.view').attr('id')
   }, (data) => {
-    console.log(data);
+    setTimeout(function() {
+      console.log(data);
+      $('#documentcontainer').empty();
+      documentSelect();
+      documentSearch();
+      $('html').css('cursor', '');
+      $('.view #like img').toggleClass('active');
+    }, 100);
   });
-  setTimeout(function() {
-    $('#documentcontainer').empty();
-    documentSelect();
-    documentSearch();
-    $('html').css('cursor', '');
-    $('.view #like img').toggleClass('active');
-  }, 100);
 })
 
 /* ////////////////////////////////////// */
@@ -350,8 +350,19 @@ $(document).click(function(event) {
 
 function rateStar(tar){
   $('.view #rate' + tar).on('click', '.star', function() {
+    $('html').css('cursor', 'wait');
     $('.view #rate' + tar + ' .star').removeClass('active');
     $(this).toggleClass('active');
+    $.get('/tag' + tar + '' , {
+      userID: userID,
+      score: 5 - $(this).index(),
+      doc: $('.modal.view').attr('id')
+    }, (data) => {
+      setTimeout(function() {
+        console.log(data);
+        $('html').css('cursor', '');
+      }, 100);
+    });
   });
 }
 
