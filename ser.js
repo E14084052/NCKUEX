@@ -69,7 +69,7 @@ app.get('/documentSearch', (req, res) => {
       data[id].clas.includes(req.query.search)||
       data[id].up.includes(req.query.search)
         ) {
-      HTML += htmlWriter(data[id], id)
+        HTML += htmlWriter(data[id], id);
     }}
     if (HTML == '') {
       HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
@@ -79,21 +79,19 @@ app.get('/documentSearch', (req, res) => {
 });
 
 function htmlWriter(data, id){
-  const html = fs.readFileSync('./dist/html/document.html', 'utf8');
-  const $ = cheerio.load(html);
-  $('.document').attr('id', id);
-  $('.year h4').text(data.year);
-  $('.teacher h4').text(data.teac);
-  $('.like h4').text(data.like.count);
-  $('.name h4:eq(0)').text(data.clas);
-  $('.name h4:eq(1)').text(data.name);
-  $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block': 'none'));
-  $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block': 'none'));
-  $('.uploader img:eq(0)').attr('src', './img/userpic/' + data.pic);
-  $('.uploader h4').text(data.up);
-  $('.uploader img:eq(1)').attr('style', 'opacity:' + (data.award == 1 ? 1:0));
-  return $.html()
-}
+    let HTML = '';
+      HTML += '<div class="document" id="' + id + '">' +
+      '<div class="year container"><h4>' + data.year + '</h4></div>' +
+      '<div class="teacher container"><h4>' + data.teac + '</h4></div>' +
+      '<div class="like container"><img src="./img/like.png"><h4>' + data.like.count + '</h4></div>' +
+      '<div class="name container"><h4>' + data.clas + '</h4><p>|</p><h4>' + data.name +'</h4></div>' +
+      '<div class="tag container">' +
+              '<img style="display:' + (data.tagA == 1 ? 'block': 'none')  + '" src="./img/check1.png">' +
+              '<img style="display:' + (data.tagB == 1 ? 'block': 'none') + '" src="./img/check2.png"></div>' +
+      '<div class="uploader container"><img src="./img/userpic/' + data.pic + '"><h4>' + data.up + '</h4>' +
+          '<img class="award" src="./img/fire.png" style="opacity:' + (data.award == 1 ? 1:0) + ';"></div></div>';
+    return HTML
+  }
 
 /* ////////////////////////////////////// */
 
@@ -123,6 +121,19 @@ app.get('/updatedepartment', (req, res) => {
   });
 });
 
+app.get('/updateteacher', (req, res) => {
+  fs.readFile('./lecture.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    data = JSON.parse(data);
+    let HTML = '';
+    for (let id in data) {
+      if (data[id].name == req.query.lec) {
+        // HTML += '<li>' + data[id].teac + '</li>';
+    }}
+    res.send(HTML);
+  });
+});
+
 /* ////////////////////////////////////// */
 
 import cheerio from 'cheerio';
@@ -141,7 +152,7 @@ app.get('/view', (req, res) => {
       $('#userpic img').attr('src', './img/userpic/' + data[req.query.doc].pic);
       $('#up').text(data[req.query.doc].up);
       $('#download a').attr('href', './upload/' + data[req.query.doc].url);
-      let like = data[req.query.doc].like.user.includes(req.query.userID);
+      let like = data[req.query.doc].like.userIds.includes(req.query.userID);
       res.send([$.html(), like]);
     });
   })
@@ -163,16 +174,17 @@ app.get('/personal_page', (req, res) => {
 
 /* ////////////////////////////////////// */
 
+
 app.get('/like', (req, res) => {
   fs.readFile('document.json', 'utf8', (err, data) => {
     if (err) throw err;
     data = JSON.parse(data);
-    if (data[req.query.doc].like.user.includes(req.query.userID)) {
+    if (data[req.query.doc].like.userIds.includes(req.query.userID)) {
       res.send('已讚')
      }
     else{
-      data[req.query.doc].like.user.push(req.query.userID);
-      data[req.query.doc].like.count = data[req.query.doc].like.user.length;
+      data[req.query.doc].like.userIds.push(req.query.userID);
+      data[req.query.doc].like.count = data[req.query.doc].like.userIds.length;
       fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function(err) {
         if (err) throw err;
       });
@@ -180,52 +192,6 @@ app.get('/like', (req, res) => {
     }
   });
 });
-
-app.get('/tagA', (req, res) => {
-  fs.readFile('document.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    data = JSON.parse(data);
-    // if (req.query.userID in data[req.query.doc].tagA.user) {
-    //   res.send('已評分')
-    //  }
-    // else{
-      data[req.query.doc].tagA.user[req.query.userID] = req.query.score;
-      let score = 0;
-      for (let id in data[req.query.doc].tagA.user) {
-        score += parseInt(data[req.query.doc].tagA.user[id]);
-      }
-      data[req.query.doc].tagA.score = score / Object.keys(data[req.query.doc].tagA.user).length;
-      fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function(err) {
-        if (err) throw err;
-        res.send('評分成功');
-      });
-    //}
-  });
-});
-
-app.get('/tagB', (req, res) => {
-  fs.readFile('document.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    data = JSON.parse(data);
-    // if (req.query.userID in data[req.query.doc].tagB.user) {
-    //   res.send('已評分')
-    //  }
-    // else{
-      data[req.query.doc].tagB.user[req.query.userID] = req.query.score;
-      let score = 0;
-      for (let id in data[req.query.doc].tagB.user) {
-        score += parseInt(data[req.query.doc].tagB.user[id]);
-      }
-      data[req.query.doc].tagB.score = score / Object.keys(data[req.query.doc].tagB.user).length;
-      fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function(err) {
-        if (err) throw err;
-        res.send('評分成功');
-      });
-    //}
-  });
-});
-
-
 
 
 
