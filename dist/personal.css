@@ -23,7 +23,7 @@
   padding: 0;
 }
 
-.preview_personal_1{
+.personal{
   display: flex;
   justify-content: flex-end;
   background-color: #181818;
@@ -34,26 +34,26 @@
   overflow-x: hidden;
 }
 
-.preview_personal_1 #null{
+.personal #null{
   height: 100%;
   width: 34%;
 }
 
-.preview_personal_1 .parent{
+.personal .parent{
   height: 100%;
   width: 66%;
   display: flex; 
   justify-content: space-between;
 }
 
-.preview_personal_1 .sidebar{ 
+.personal .sidebar{ 
   height: auto; 
   width: 28%; 
   color:white; 
   background-color: #2b2b2b; 
 } 
 
-.preview_personal_1 .content{ 
+.personal .content{ 
   height: auto;
   width: 72%; 
   padding: 1.5vw; 
@@ -61,9 +61,10 @@
   color: #81D6FA; 
   font-family: "Source Han Sans SC Bold", sans-serif;
   font-size: 1vw;
+  letter-spacing: 0.1vw;
 } 
 
-.preview_personal_1 .top{
+.personal .top{
   /* background-image: url(./images/E_0_LOGO及登出框框.png); 
     background-repeat: no-repeat;  */
     border-top: 0.1vw solid #ffffff;
@@ -73,7 +74,7 @@
     justify-content: space-between; 
 }
 
-.preview_personal_1 .logo{ 
+.personal .logo{ 
   width: 50%; 
   position: relative; 
   padding: 0.5vw; 
@@ -82,7 +83,7 @@
   align-items: center;
 } 
 
-.preview_personal_1 .log_out{ 
+.personal .log_out{ 
   width: 50%; 
   text-align: right; 
   color: white; 
@@ -94,12 +95,12 @@
   margin-right: 0.9vw;
 } 
 
-.preview_personal_1 .log_out p:hover{ 
+.personal .log_out p:hover{ 
   color: #81D6FA;
   cursor: pointer; 
 } 
 
-.preview_personal_1 .profile{ 
+.personal .profile{ 
   height: 18.5vw; 
   border-bottom: 0.1vw solid #ffffff;
   display: flex;
@@ -107,18 +108,18 @@
   align-items: center;
 } 
 
-.preview_personal_1 .pic img{ 
+.personal .pic img{ 
   height: 9vw; 
   margin-bottom: 0.65vw;
 } 
 
-.preview_personal_1 .nickname{ 
+.personal .nickname{ 
   /* text-align: center;  */
   display: flex;
   align-items: center;
 } 
 
-.preview_personal_1 p1{ 
+.personal p1{ 
   font-family: "Source Han Sans SC Bold", sans-serif;  
   font-size: 1.35vw;  
   letter-spacing: 0.05em; 
@@ -126,18 +127,18 @@
   /* text-align: center;  */
 } 
 
-.preview_personal_1 .edit img{
+.personal .edit img{
   height: 1vw;
   margin-left: 0.5vw;
   cursor: pointer;
 }
 
-.preview_personal_1 .info{ 
+.personal .info{ 
   height: 17vw; 
   border-bottom: 0.1vw solid #ffffff;
 } 
 
-.preview_personal_1 .info_container{ 
+.personal .info_container{ 
   display: flex; 
   justify-content: space-between; 
   font-family: "Source Han Sans SC Light", sans-serif;  
@@ -146,7 +147,7 @@
   color: white; 
 } 
 
-.preview_personal_1 .item{ 
+.personal .item{ 
   border: 0.1vw solid #81D6FA; 
   color: #81D6FA; 
   text-align: center; 
@@ -154,13 +155,13 @@
   padding: 0.1vw 0.5vw; 
 } 
 
-.preview_personal_1 .detail{ 
+.personal .detail{ 
   text-align: center; 
   width: 30%; 
   /* padding: 0.5vh;  */
 } 
 
-.preview_personal_1 .footer{ 
+.personal .footer{ 
   margin-top: 2.2vw;
   height: 12vw; 
   background-image: url(./img/E_5_顯示.png); 
@@ -171,11 +172,11 @@
   width: 100%; 
 } 
 
-.preview_personal_1 .footer .sum{
+.personal .footer .sum{
   width: 26%;
 }
 
-.preview_personal_1 .footer h1{ 
+.personal .footer h1{ 
   color: black; 
   text-align: center; 
   /* width: 50%;  */
@@ -184,10 +185,13 @@
   margin-top: 1.5vw; 
 } 
 
-.preview_personal_1 .upload_container{
+.personal .upload_container, .personal .upload_info{
   height: 23.8vw;
   border-top: 0.1vw solid #ffffff;
   border-bottom: 0.1vw solid #ffffff;
+}
+
+.personal .upload_container{
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -195,18 +199,184 @@
   align-items: center;
 }
 
-.preview_personal_1 .upload_pic{
+.personal .upload_info{
+  /* display: none; */
+}
+
+.personal .upload_container{
+  display: none;
+}
+
+.personal .upload_info{
+  background-color: #2b2b2b;
+  padding: 0 1.5vw;
+}
+
+.personal .upload_pic{
   display: flex;
   justify-content: center;
   margin-bottom: 0.5vw;
 }
 
-.preview_personal_1 .history{ 
+.personal .upload_title{
+  display: flex;
+  justify-content: space-between;
+}
+
+.personal .smallfile img{
+  width: 0.8vw;
+}
+
+.personal .smallfile{
+  display: flex;
+  align-items: center;
+}
+
+.personal p2{
+  margin: 0 0.5vw;
+  font-family: "Source Han Sans SC Light", sans-serif;
+  color: #ffffff;
+  font-size: 0.5vw;
+}
+
+.personal .reupload_button{
+  background-color: #81D6FA;
+  padding: 0 0.7vw;
+  cursor: pointer;
+}
+
+.personal p3{
+  color: #181818;
+  font-family: "Source Han Sans SC Regular", sans-serif;
+  font-size: 0.5vw;
+  letter-spacing: 0.01vw;
+}
+
+.personal .upload_detail{
+  display: flex;
+}
+
+.personal .row{
+  display: flex;
+  align-items: center;
+  /* height: 4vw; */
+}
+
+.personal .row p, .personal .row li{
+  font-family: "Source Han Sans SC Light", sans-serif;
+  color: #ffffff;
+  list-style-type: none;
+  margin-right: 0.7vw;
+  font-size: 0.5vw;
+}
+
+.personal .filter{
+  position: relative;
+}
+
+.personal .row #college{
+  width: 12.5vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+  margin-right: 1.7vw;
+}
+
+.personal .row .header {
+  padding: 0.2vw;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.personal .row .triangle {
+  width: 0;
+  height: 0;
+  border-left: 0.3vw solid transparent;
+  border-right: 0.3vw solid transparent;
+  border-top: 0.45vw solid #D3D3D5;
+  margin-right: 0.2vw;
+  margin-top: 0.1vw;
+}
+
+.personal .row #department{
+  width: 9.5vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+  margin-right: 1.7vw;
+}
+
+.personal .row #grade{
+  width: 9.5vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+}
+
+.personal .row #lecture{
+  width: 26.5vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+  margin-right: 1.7vw;
+}
+
+.personal .row #teacher{
+  width: 9.5vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+}
+
+.personal .row #year{
+  width: 17vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+  margin-right: 1.7vw;
+}
+
+.personal .row #clas{
+  width: 19vw;
+  border-top: 0.1vw solid #ffffff;
+  border-bottom: 0.1vw solid #ffffff;
+}
+
+.personal .row .content{
+  display: none;
+  position: absolute;
+  max-height: 10vw;
+  overflow-y: scroll;
+  background-color: #2b2b2b;
+  border: 0.1vw solid #D3D3D5;
+  /* padding-right: 1vw; */
+  text-align: right;
+  padding: 0.5vw;
+  cursor: pointer;
+}
+
+.personal .row .content.active{
+  display: block;
+  z-index: 10;
+}
+
+.personal .confirm_button{
+  height: 2vw;
+  background-color: #81D6FA;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.personal .confirm_button p{
+  font-family: "Source Han Sans SC Bold", sans-serif;
+  color: #181818;
+  font-size: 0.5vw;
+}
+
+.personal .history{ 
   height: 18.3vw; 
   /* background-color:#ffffff; */
 } 
 
-.preview_personal_1 .file_container{ 
+.personal .file_container{ 
   height: 12vw;
   width: auto;
   display: block; 
@@ -217,14 +387,14 @@
   /* ::-webkit-scrollbar {width: 0;}  */
 } 
 
-.preview_personal_1 .file_1{ 
+.personal .file_1{ 
   height: 12vw;
   width: 15vw; 
   margin-right: 1.5vw;
   display: inline-block;
 } 
 
-.preview_personal_1 .file_2{ 
+.personal .file_2{ 
   height: 10.4vw;
   /* width: 14vw;  */
   display: flex; 
@@ -233,7 +403,7 @@
   background-color: #2b2b2b; 
 } 
 
-.preview_personal_1 .file_info{ 
+.personal .file_info{ 
   width: 35%;
   color: white; 
   display: flex;
@@ -241,27 +411,26 @@
   justify-content: space-between;
 } 
 
-.preview_personal_1 .file_detail{
+.personal .file_detail{
   font-size: 0.5vw;
   font-family: "Source Han Sans SC Light", sans-serif; 
 } 
 
-.preview_personal_1 .file_pic{ 
+.personal .file_pic{ 
   width: 65%;
   display: flex;
   justify-content: end;
   align-items: center;
 } 
 
-.preview_personal_1 .file_pic img{ 
+.personal .file_pic img{ 
   width: 85%;
 } 
 
-.preview_personal_1 .more{
+.personal .more{
   border: 0.1vw solid #ffffff;
   height: 10.5vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  letter-spacing: 0.1vw;
 }

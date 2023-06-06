@@ -1,7 +1,8 @@
-<title>preview_personal_1</title>  
-<link href="preview_personal_1.css" rel="stylesheet" type="text/css">  
+<title>personal</title>  
+<link href="personal.css" rel="stylesheet" type="text/css">  
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-<div class="preview_personal_1">
+<div class="personal">
   <div id="null"></div>
 
   <div class="parent">
@@ -68,6 +69,150 @@
       <div class="upload_container"> 
         <div class="upload_pic"><img src="./img/E_6_上傳按鈕.png" style="width: 45%;"></div>
         <div class="upload_text"><p>電機小恐龍的上傳區</p></div>
+      </div>
+
+      <div class="upload_info">
+        <div style="height: 1.3vw;"></div>
+        <div class="upload_title">
+          <p>電機小恐龍的上傳區</p>
+          <div class="upload_detail">
+            <div class="smallfile"><img src="./img/E_10_文件icon.png"></div>
+            <div class="file_name"><p2>HW7_01.pdf</p2></div>
+            <div class="reupload_button"><p3>重新上傳</p3></div>
+          </div>
+        </div>
+        <div style="height: 2vw;"></div>
+        <div class="row">
+          <p>學院</p>
+          <div id="college" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 11.5vw;">
+              <ul>
+                  <li>規劃設計學院</li>
+                  <li>工學院</li>
+                  <li>社會科學院</li>
+                  <li>醫學院</li>
+                  <li>管理學院</li>
+                  <li>文學院</li>
+                  <li>理學院</li>
+                  <li>電機資訊學院</li>
+                  <li>生物科學與科技學院</li>
+                  <li>敏求智慧運算學院</li>
+                  <li>跨院之學位學程</li>
+                  <li>通識課程</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>科系</p>
+          <div id="department" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 8.5vw;">
+              <ul>
+                  <li></li>
+              </ul>
+            </div>
+          </div>
+
+          <p>年級</p>
+          <div id="grade" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 8.5vw;">
+              <ul>
+                  <li>大一</li>
+                  <li>大二</li>
+                  <li>大三</li>
+                  <li>大四</li>
+                  <li>研究所</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 3.2vw;"></div>
+
+        <div class="row">
+          <p>課程</p>
+          <div id="lecture" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 25.5vw;">
+              <ul>
+                  <li></li>
+              </ul>
+            </div>
+          </div>
+
+          <p>教師</p>
+          <div id="teacher" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 8.5vw;">
+              <ul>
+                  <li></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 3.2vw;"></div>
+
+        <div class="row">
+          <p>學年</p>
+          <div id="year" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 16vw;">
+              <ul>
+                  <li>112-2</li>
+                  <li>112-1</li>
+                  <li>111-2</li>
+                  <li>111-1</li>
+                  <li>110-2</li>
+                  <li>110-1</li>
+                  <li>109-2</li>
+                  <li>109-1</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>類別</p>
+          <div id="clas" class="filter">
+            <div class="header">
+              <li>-請選擇-</li>
+              <div class="triangle"></div>
+            </div>
+            <div class="content" style="width: 18vw;">
+              <ul>
+                  <li>大考</li>
+                  <li>小考</li>
+                  <li>作業</li>
+                  <li>其他</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 3.2vw;"></div>
+
+        <div class="confirm_button">
+          <p>點擊上傳</p>
+        </div>
       </div>
 
       <div class="history"> 
@@ -162,3 +307,5 @@
     </div>
   </div>
 </div>
+
+<script src="./personal.js"></script>

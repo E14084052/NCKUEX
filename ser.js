@@ -4,6 +4,13 @@ import express from 'express'
 
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
+
+// google 登入用
+import querystring from 'querystring'
+import axios from 'axios'
+import session from 'express-session'
+
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
@@ -123,6 +130,20 @@ app.get('/updatedepartment', (req, res) => {
   });
 });
 
+app.get('/updateteacher', (req, res) => {
+  fs.readFile('./lecture.json', 'utf8', function (err, data) {
+    if (err) throw err;
+    data = JSON.parse(data);
+    let HTML = '';
+    for (let id in data) {
+      if (data[id].name == req.query.lec) {
+        // HTML += '<li>' + data[id].teac + '</li>';
+      }
+    }
+    res.send(HTML);
+  });
+});
+
 /* ////////////////////////////////////// */
 
 import cheerio from 'cheerio';
@@ -225,6 +246,151 @@ app.get('/tagB', (req, res) => {
   });
 });
 
+/* ////////////////////////////////////// */
+
+
+/*------------------Google login------------------*/
+//parameter
+const client_id = '770897758084-pmf9c33inv3pt39eo65fvapl6971v0lu.apps.googleusercontent.com'
+const client_secret = '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'
+const root = 'http://localhost:8888'
+const redirect_url = root + '/auth/google/callback'
+
+//google登入連結
+app.get('/auth/google', (req, res) => {
+  const query = {
+    redirect_uri: redirect_url,
+    client_id: client_id,
+    access_type: 'offline',
+    response_type: 'code',
+    prompt: 'consent',
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email'
+    ].join(' ')
+  }
+  const auth_url = 'https://accounts.google.com/o/oauth2/v2/auth'
+
+  console.log(`${auth_url}?${querystring.stringify(query)}`)
+  res.redirect(`${auth_url}?${querystring.stringify(query)}`) // 將Grant傳到uri
+})
+
+//授權過後回傳到callback內
+app.get('/auth/google/callback', async (req, res) => {
+  // 取得token
+  const code = req.query.code
+  const options = {
+    code,
+    clientId: client_id,
+    clientSecret: client_secret,
+    redirectUri: redirect_url,
+    grant_type: 'authorization_code'
+  }
+  const url = 'https://oauth2.googleapis.com/token'
+  const response = await axios.post(url, querystring.stringify(options))
+
+  //利用token取得需要的資料
+  const { id_token, access_token } = response.data
+  const getData = await axios.get(
+    `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+    {
+      headers: { Authorization: `Bearer ${id_token}` }
+    }
+  )
+
+  // console.log(getData.data)
+  //轉址指定頁面
+  res.redirect('/sort.html')
+  console.log("Login success");
+
+  // 更新資料庫
+  const insertQuery = `INSERT INTO user_info (id, email, verified_email, username, given_name, family_name, picture, locale, hd) VALUES ('${getData.data.id}', '${getData.data.email}', ${getData.data.verified_email}, '${getData.data.name}', '${getData.data.given_name}', '${getData.data.family_name}', '${getData.data.picture}', '${getData.data.locale}', '${getData.data.hd}')`;
+
+  connection.query(insertQuery, [getData.data.id, getData.data.email, getData.data.verified_email, getData.data.name, getData.data.given_name, getData.data.family_name, getData.data.picture, getData.data.locale, getData.data.hd], (error, results) => {
+    if (error) {
+      if (error.code == "ER_DUP_ENTRY") {
+        console.log("歡迎！", getData.data.name);
+      }
+      else console.error('哭阿出錯啦！', error);
+    }
+    else {
+      console.log(`新用戶${getData.data.name}資料已加入資料庫`);
+    }
+  });
+
+  setUserInfo(getData.data);
+})
+
+app.get('/success', (req, res) => {
+  res.send('get data from google successfully')
+})
+
+/*------------------<Database part>------------------*/
+// 連接Database
+import mysql from "mysql";
+const connection = mysql.createConnection({
+  user: 'root',
+  host: 'localhost',
+  port: 3306,
+  password: '',
+  database: `NCKUEX`
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('Database connection failed!\n' + err.stack);
+    return;
+  }
+  console.log('Database connection successful!');
+});
+
+
+let UserInfo_global;
+function setUserInfo(UserInfo) {
+  connection.query(`select * from user_info where email = '${UserInfo.email}'`, (error, results, fields) => {
+    if (error) throw error;
+    UserInfo_global = results;
+    // console.log("UserInfo = ", UserInfo);
+  });
+}
+
+// 把UserInfo送到前端
+app.get('/UserInfo', (req, res) => {
+  res.send(UserInfo_global[0]);
+});
+
+
+/*------------------File Upload Test Block------------------*/
+import multer from "multer";
+import path from "path";
+// 設定上傳檔案的儲存位置和檔名
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'dist/uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+// 建立multer上傳物件
+const upload = multer({ storage: storage });
+
+// 處理檔案上傳和資訊輸入的請求
+app.post('/upload', upload.single('file'), (req, res) => {
+  // 取得使用者輸入的檔案資訊
+  const { filename, courseName, category, teacher } = req.body;
+  const file = req.file;
+  const extname = path.extname(file.originalname);
+  fs.rename(file.path, file.destination + courseName + "_" + teacher + "_" + category + "_" + filename + Date.now() + extname, function (err) {
+    if (err) {
+      res.send("重命名錯誤");
+    } else {
+      res.send("檔案上傳成功");
+    }
+  });
+});
+/**/
 
 
 
