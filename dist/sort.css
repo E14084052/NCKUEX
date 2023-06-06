@@ -518,14 +518,6 @@ footer.sort{
     opacity: 0;
     transition: .5s ease-in-out;
 }
-.modal{
-    opacity: 1;
-    display: flex;
-    justify-content: flex-end;
-}
-.modal img{
-    height: 100%;
-}
 
 /* ////////////////////////////////////// */
 @media screen and (max-aspect-ratio: 16/9){

@@ -16,7 +16,7 @@ const __dirname = dirname(__filename)
 
 // 建立一個 express (也就是網頁伺服器)實體
 const app = express()
-const port = 8788
+const port = 8888
 // 啟動伺服器
 app.listen(port, () => {
   console.log(`listening on port: ${port}`)
@@ -73,8 +73,8 @@ app.get('/documentSearch', (req, res) => {
       data[id].dep.includes(req.query.search)||
       data[id].lec.includes(req.query.search)||
       data[id].teac.includes(req.query.search)||
-      data[id].clas.includes(req.query.search)||
-      data[id].up.includes(req.query.search)
+      data[id].clas.includes(req.query.search)
+      //||data[id].up.includes(req.query.search)
         ) {
       HTML += htmlWriter(data[id], id)
     }}
@@ -297,21 +297,21 @@ app.get('/auth/google/callback', async (req, res) => {
   console.log("Login success");
 
   // 更新資料庫
-  const insertQuery = `INSERT INTO user_info (id, email, verified_email, username, given_name, family_name, picture, locale, hd) VALUES ('${getData.data.id}', '${getData.data.email}', ${getData.data.verified_email}, '${getData.data.name}', '${getData.data.given_name}', '${getData.data.family_name}', '${getData.data.picture}', '${getData.data.locale}', '${getData.data.hd}')`;
+  // const insertQuery = `INSERT INTO user_info (id, email, verified_email, username, given_name, family_name, picture, locale, hd) VALUES ('${getData.data.id}', '${getData.data.email}', ${getData.data.verified_email}, '${getData.data.name}', '${getData.data.given_name}', '${getData.data.family_name}', '${getData.data.picture}', '${getData.data.locale}', '${getData.data.hd}')`;
 
-  connection.query(insertQuery, [getData.data.id, getData.data.email, getData.data.verified_email, getData.data.name, getData.data.given_name, getData.data.family_name, getData.data.picture, getData.data.locale, getData.data.hd], (error, results) => {
-    if (error) {
-      if (error.code == "ER_DUP_ENTRY") {
-        console.log("歡迎！", getData.data.name);
-      }
-      else console.error('哭阿出錯啦！', error);
-    }
-    else {
-      console.log(`新用戶${getData.data.name}資料已加入資料庫`);
-    }
-  });
+  // connection.query(insertQuery, [getData.data.id, getData.data.email, getData.data.verified_email, getData.data.name, getData.data.given_name, getData.data.family_name, getData.data.picture, getData.data.locale, getData.data.hd], (error, results) => {
+  //   if (error) {
+  //     if (error.code == "ER_DUP_ENTRY") {
+  //       console.log("歡迎！", getData.data.name);
+  //     }
+  //     else console.error('哭阿出錯啦！', error);
+  //   }
+  //   else {
+  //     console.log(`新用戶${getData.data.name}資料已加入資料庫`);
+  //   }
+  // });
 
-  setUserInfo(getData.data);
+//   setUserInfo(getData.data);
 })
 
 app.get('/success', (req, res) => {
@@ -319,38 +319,38 @@ app.get('/success', (req, res) => {
 })
 
 /*------------------<Database part>------------------*/
-// 連接Database
-import mysql from "mysql";
-const connection = mysql.createConnection({
-  user: 'root',
-  host: 'localhost',
-  port: 3306,
-  password: '',
-  database: `NCKUEX`
-});
+//連接Database
+// import mysql from "mysql";
+// const connection = mysql.createConnection({
+//   user: 'root',
+//   host: 'localhost',
+//   port: 3306,
+//   password: '',
+//   database: `NCKUEX`
+// });
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Database connection failed!\n' + err.stack);
-    return;
-  }
-  console.log('Database connection successful!');
-});
+// connection.connect((err) => {
+//   if (err) {
+//     console.error('Database connection failed!\n' + err.stack);
+//     return;
+//   }
+//   console.log('Database connection successful!');
+// });
 
 
-let UserInfo_global;
-function setUserInfo(UserInfo) {
-  connection.query(`select * from user_info where email = '${UserInfo.email}'`, (error, results, fields) => {
-    if (error) throw error;
-    UserInfo_global = results;
-    // console.log("UserInfo = ", UserInfo);
-  });
-}
+// let UserInfo_global;
+// function setUserInfo(UserInfo) {
+//   connection.query(`select * from user_info where email = '${UserInfo.email}'`, (error, results, fields) => {
+//     if (error) throw error;
+//     UserInfo_global = results;
+//     // console.log("UserInfo = ", UserInfo);
+//   });
+// }
 
-// 把UserInfo送到前端
-app.get('/UserInfo', (req, res) => {
-  res.send(UserInfo_global[0]);
-});
+// // 把UserInfo送到前端
+// app.get('/UserInfo', (req, res) => {
+//   res.send(UserInfo_global[0]);
+// });
 
 
 /*------------------File Upload Test Block------------------*/

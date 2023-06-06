@@ -235,19 +235,19 @@ $(document).on('click', '.view #quit', function() {
 let quitView = false;
 
 $(document).on('click', '.view #userpic img', function() {
-  showModal('preview_personal', '');
+  showModal('personal', 'id');
 });
 
 
-$(document).on('click', '.preview_personal #null', function() {
+$(document).on('click', '.personal #null', function() {
   closeModal();
 });
 
-function showModal(page, doc) {
+function showModal(page, id) {
   $('html').css('cursor', 'wait');
-  let modal = $('<div>').attr('id', doc).addClass('modal').addClass(page);
+  let modal = $('<div>').attr('id', id).addClass('modal').addClass(page);
   $('body').append(modal);
-  Page(page, doc)
+  Page(page, id)
   setTimeout(function() {
     modal.css('opacity', 1);
     $('html').css('cursor', '');
@@ -267,8 +267,9 @@ function closeModal() {
   }, 500);
 }
 
-function Page(page, doc) {
-  if (page == 'view') {viewPage(doc);}
+function Page(page, id) {
+  if (page == 'view') {viewPage(id);}
+  if (page == 'personal') {personalPage(id);}
 }
 
 function viewPage(doc){
@@ -276,10 +277,18 @@ function viewPage(doc){
     userID: userID,
     doc: doc
   }, (data) => {
-    $('#' + doc + '.modal').html(data[0]);
+    $('#' + doc + '.view').html(data[0]);
     Interactive(data[1])
     viewScroll()
     renderPDF($('#download a').attr('href'), doc);
+  });
+}
+
+function personalPage(userid){
+  $.get('/personal' , {
+    userID: 'id',
+  }, (data) => {
+    $('#' + userid + '.personal').html(data);
   });
 }
 
