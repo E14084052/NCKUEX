@@ -70,7 +70,6 @@ $('.personal').find('#clas .content').on('click', 'li', function(event) {
 /* ////////////////////////////////////// */
 
 function updateContent(target) {
-    console.log(target);
     $.get('/update' + target + '', {
         json: target,
         col: collegeTarget,
