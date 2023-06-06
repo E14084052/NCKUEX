@@ -82,6 +82,12 @@ function updateContent(target) {
 }
 
 /* ////////////////////////////////////// */
+$('.personal').find('#file').on('change', function(event) {
+    $('.personal').find('.upload_container').css('display', 'none');
+    $('.personal').find('.upload_info').css('display', 'block');
+})
 
 /* ////////////////////////////////////// */
 })
+
+
