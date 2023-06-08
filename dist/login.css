@@ -20,7 +20,6 @@
     padding: 0;
     margin: 0;
 }
-
 html{ 
     background-color: #181818;
     overflow-X: hidden;
@@ -45,7 +44,7 @@ p1, p2, p3, p4{
     line-height: 2;
     letter-spacing: 0.08em;
 }
-p1{ 
+p1, p5{ 
     font-family: "Source Han Sans SC Bold", sans-serif; 
     font-size: 1.85em;
 } 
@@ -129,9 +128,7 @@ p3:nth-child(3){
 /* ////////////////////////////////////// */
 
 .rightbox{
-    margin-left: 8.8%;
-    width: 30%;
-    margin-right: auto;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -139,23 +136,35 @@ p3:nth-child(3){
 .acess{
     margin-top: 3.5em;
     width: 100%;
-    height: 8em;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.acess a{
-    width: auto;
-    margin: .8em;
-    height: 100%;
+.acess button{
+    width: 17em;
+    margin: 0 2%;
+    height: 4em;
+    border-radius: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.acess a img{
-    width: 100%;
+.acess button:nth-child(2){
+    background-color: #81D6FA;
 }
-a:hover{
+button p5{
+    font-size: 1.4em;
+    margin-bottom: .2em;
+}
+#login p5{
+    margin-right: 6%;
+}
+#login img{
+    width: 12%;
+    margin-right: 6%;
+}
+a:hover, button:hover{
     transition: .5s ease-in-out;
     transform: scale(1.1);
 }
@@ -169,16 +178,13 @@ footer{
     justify-content: center;
     align-items: center;
 }
-footer a{
-    width: 33%;
-    margin-bottom: .8%;
-}
 
 /* ////////////////////////////////////// */
 
 @media screen and (max-aspect-ratio: 16/9.1){
     main{
         height: 90vh;
+        background-size: 100vh;
         font-size: 18px;
     }
     footer{
@@ -187,15 +193,13 @@ footer a{
     .acess{
         flex-direction: column;
     }
-    .acess a{
-        height: auto;
+    .acess button{
         margin: 1em 0;
     }
 }
 @media screen and (max-aspect-ratio: 16/12.1){
     main{
         height: 90vh;
-        background-size: 100vh;
         font-size: 20px;
     }
     footer{
@@ -222,24 +226,20 @@ footer a{
         display: block;
         animation: fade 2s ease-in-out infinite;
     }
-    @media screen and (max-width: 40em){
+    @media screen and (max-width: 675px){
         main{
+            font-size: 12px;
             background-position: center;
         }
-        @media screen and (max-width: 475px){
-            main{
-                font-size: 12px;
-            }
-            footer{
-                font-size: 12px;
-                text-align: center;
-            }
+        footer{
+            font-size: 12px;
+            text-align: center;
         }
     }
 }
-@media screen and (min-width: 1440px){
+@media screen and (min-width: 1600px){
     main{
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 @media screen and (min-width: 1920px){
@@ -252,6 +252,10 @@ footer a{
     0% { opacity: 0; }
     50% { opacity: 1; }
     100% { opacity: 0; }
+}
+html{
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 

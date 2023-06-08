@@ -32,21 +32,23 @@
 
     <div class="rightbox">
       <div class="acess">
-        <a href="http://localhost:8888/auth/google">
-          <img id="login" src="./img/成大用戶.png">
-        </a>
-        <a href="">
-          <img id="sign" src="./img/訪客.png">
-        </a>
+        <button id="login" onclick="login()">
+          <img src="./img/7123953_logo_google_g_icon 2.png"><p5>成大用戶</p5>
+        </button>
+        <button id="visitor">
+          <p5>訪客</p5>
+        </button>
       </div>
     </div>
   </main>
   <footer>
     <p4>© 2023 NCKU EX. All rights reserved. Last Updated on Jun 16, 2023</p4>
   </footer>
-
-
-
+  <script>
+    function login() {
+      window.open('http://localhost:8888/auth/google', '_blank', 'width=400,height=600');
+    }
+  </script>
 </body>
 
 </html>
