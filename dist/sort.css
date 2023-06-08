@@ -131,14 +131,9 @@ header.sort{
     color: #181818;
 }
 .sort #text{
-    opacity: 0;
     justify-content: flex-end;
     margin-right: 2vw;
 }
-.sort #text.active{
-    opacity: 1;
-}
-
 
 /* ////////////////////////////////////// */
 main.sort{

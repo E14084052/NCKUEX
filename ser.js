@@ -96,9 +96,9 @@ function htmlWriter(data, id){
   $('.name h4:eq(1)').text(data.name);
   $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block': 'none'));
   $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block': 'none'));
-  $('.uploader img:eq(0)').attr('src', './img/userpic/' + data.pic);
-  $('.uploader h4').text(data.up);
-  $('.uploader img:eq(1)').attr('style', 'opacity:' + (data.award == 1 ? 1:0));
+  //$('.uploader img:eq(0)').attr('src', './img/userpic/' + data.pic);
+  //$('.uploader h4').text(data.up);
+  //$('.uploader img:eq(1)').attr('style', 'opacity:' + (data.award == 1 ? 1:0));
   return $.html()
 }
 
