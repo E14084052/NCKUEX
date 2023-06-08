@@ -99,6 +99,10 @@ header.sort{
     color:#D3D3D5;
     text-align: end;
 }
+input:focus {
+    outline: none;
+  }
+  
 
 /* ////////////////////////////////////// */
 .sort #text, .sort #login{

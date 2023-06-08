@@ -7,6 +7,7 @@
   <link rel="shortcut icon" type="image/png" href="./img/1_分頁logo.png">
   <title>NCKU EX</title>
   <link href="login.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
 
     <div class="rightbox">
       <div class="acess">
-        <button id="login" onclick="login()">
+        <button id="login">
           <img src="./img/7123953_logo_google_g_icon 2.png"><p5>成大用戶</p5>
         </button>
         <button id="visitor">
@@ -44,11 +45,23 @@
   <footer>
     <p4>© 2023 NCKU EX. All rights reserved. Last Updated on Jun 16, 2023</p4>
   </footer>
-  <script>
-    function login() {
-      window.open('http://localhost:8888/auth/google', '_blank', 'width=400,height=600');
-    }
-  </script>
+  <div class="modal">
+    <div class="welcome">
+      <div class="header">
+        <p5>歡迎加入NCKU EX！</p5>
+        <img src="./img/Group180.png" id="quit">
+      </div>
+      <div class="content">
+        <div>
+          <img src="./img/小恐龍.png" id="userpic">
+          <img src="./img/Group.png">
+        </div>
+        <input type="text" id="username" placeholder="請輸入你的暱稱">
+        <img src="./img/Group122.png" id="done">
+      </div>
+    </div>
+  </div>
+  <script src="./js/login.js"></script>
 </body>
 
 </html>

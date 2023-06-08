@@ -37,7 +37,7 @@ body{
 
 /* ////////////////////////////////////// */
 
-p1, p2, p3, p4{ 
+p1, p2, p3, p4, p5{ 
     font-family: "Source Han Sans SC Light", sans-serif; 
     color: white;
     font-size: .92em; 
@@ -58,6 +58,9 @@ p3{
 }
 p4{
     letter-spacing: 0.04em;
+}
+p5{
+    color: black;
 }
 
 /* ////////////////////////////////////// */
@@ -165,8 +168,8 @@ button p5{
     margin-right: 6%;
 }
 a:hover, button:hover{
-    transition: .5s ease-in-out;
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 /* ////////////////////////////////////// */
@@ -253,10 +256,108 @@ footer{
     50% { opacity: 1; }
     100% { opacity: 0; }
 }
+a, button, img{
+    transition: .5s ease-in-out;
+}
 html{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
+/* ////////////////////////////////////// */
+.modal{
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(18, 18, 18, .5);
+    opacity: 0;
+    transition: .5s ease-in-out;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.modal.active{
+    opacity: 1;
+    display: flex;
+}
+.welcome{
+    width: 29%;
+    height: 36%;
+    margin-bottom: 2%;
+}
+.header{
+    width: 100%;
+    height: 17.5%;
+    background-color: rgba(129, 214, 250,.8);
+    border-top-left-radius: 1.5vw;
+    border-top-right-radius: 1.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.header p5{
+    font-size: 1em;
+    letter-spacing: 0.2em;
+}
+.header img{
+    position: absolute;
+    right: 3%;
+    bottom: 25%;
+    width: 5%;
+}
+.content{
+    width: 100%;
+    height: 82.5%;
+    background-color: rgba(222, 222, 222, .2);
+    border-bottom-left-radius: 1.5vw;
+    border-bottom-right-radius: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.content div:nth-child(1){
+    width: auto;
+    text-align: center;
+    position: relative;
+}
+.content img#userpic{
+    width: 22%;
+    margin-left: 0%;
+}
+.content img:nth-child(2){
+    width: 3%;
+    position: absolute;
+    right: 36%;
+    bottom: 8%
+}
+.content img#done{
+    width: 18%;
+}
+.content input{
+    background-color: rgba(0,0,0,0);
+    border: 0;
+    margin-top: 2%;
+    padding-bottom: 1%;
+    border-bottom: .2px solid #D3D3D5;
+    margin-bottom: 4%;
+}
+::-webkit-input-placeholder, input{
+    font-size: .2vw;
+    color:#D3D3D5;
+    text-align: center;
+}
+input:focus {
+    outline: none;
+}
+/* ////////////////////////////////////// */
+img#userpic:hover, img#quit:hover, img#done:hover{
+  transform: scale(1.1);
+  cursor: pointer;
+}
+  
 
 
