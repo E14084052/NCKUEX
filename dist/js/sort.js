@@ -186,39 +186,41 @@ $('#search-box').on('blur', function() {
 
 /* ////////////////////////////////////// */
 /* ------------------------------------------------------------------------------------------------------------------------- */
-//假登入
+  //真登入
 
-$('#login').click(function(){
-  if ($('#login p').text() == '登 入') {
-    login();
-  }
-  setTimeout(() => {
-    $('#text').toggleClass('active');
-    
-    $('#login p').text($('#login p').text() == 1 ? '登 出' : '登 入');
-    if ($('#login p').text() == '登 入') {
-      $('#user p').text('');
-      $('#user .userpic img').attr('src', '');
-    }
-  }, 100);
-})
+  fetch('/UserInfo')
+    .then(response => response.json())
+    .then(data => {
+      $.get('/UserInfoRead', {
+        userID: data.id
+      }, (json) => {
+        console.log(json);
+        $('#user p').text(json.name);
+        $('#user .userpic img').attr('src', json.picture);
+        $('#logout p').text(json ? '登 出' : '登 入');
+      });
+    })
+    .catch(error => {
+      // 處理錯誤
+      console.error(error);
+    });
 
-function login(){
-  $.getJSON('user.json', function(data) {
-    if (data[userid]) {
-      $('#user p').text(data[userid].name);
-      $('#user .userpic img').attr('src', './img/userpic/' + data[userid].pic);
+  $('#login').click(function () {
+    fetch('/logout', { method: 'GET' })
+      .then(() => {
+        window.location.href = '/login.html';  // 執行前端重定向
+      })
+      .catch(error => {
+        // 處理錯誤
+        console.error(error);
+      });
+  });
+
+  $('.userpic').click(function () {
+    if ($('#text').hasClass('active')) {
+      showModal('personal', '');
     }
   });
-}
-
-$('.userpic').click(function(){
-  if ($('#text').hasClass('active')){
-    showModal('personal_page', '');
-  }
-});
-
-let userID = 8546548;
 
 /* ////////////////////////////////////// */
 //預覽視窗

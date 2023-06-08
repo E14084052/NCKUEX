@@ -15,7 +15,7 @@ const __dirname = dirname(__filename)
 
 // 建立一個 express (也就是網頁伺服器)實體
 const app = express()
-const port = 6412
+const port = 8888
 // 啟動伺服器
 app.listen(port, () => {
   console.log(`listening on port: ${port}`)
@@ -269,7 +269,7 @@ function auth(req, res, next) {
 //parameter
 const client_id = '770897758084-pmf9c33inv3pt39eo65fvapl6971v0lu.apps.googleusercontent.com'
 const client_secret = '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'
-const root = 'http://luffy.ee.ncku.edu.tw:6412'
+const root = 'http://localhost:8888'
 const redirect_url = root + '/auth/google/callback'
 
 //google登入連結
@@ -324,14 +324,14 @@ app.get('/auth/google/callback', async (req, res) => {
 app.get('/welcome', auth, (req, res) => {
   const userName = req.session.user.given_name
   console.log("Welcom back: ", userName);
-  res.redirect('/sort.html')
+  res.redirect('/login.html')
 })
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
   console.log(req.session);
   res.clearCookie("user");
-  res.redirect('/main.html');
+  res.redirect('/login.html');
   console.log('log out successfully!');
 })
 
@@ -417,4 +417,34 @@ app.post('/upload', upload.single('file'), (req, res) => {
 // 把UserInfo送到前端
 app.get('/UserInfo', (req, res) => {
   res.send(req.session.user);
+});
+
+app.get('/UserInfoChange', (req, res) => {
+  fs.readFile('user.json', 'utf8', (err, data) => {
+    if (err) throw err;
+    data = JSON.parse(data);
+    for(let i in data){
+      if (data[i].id == req.query.userID){
+        data[i].name = req.query.username;
+        data[i].picture = req.query.userpic;
+        console.log(data[i]);
+      }
+    }
+    fs.writeFile('./user.json', JSON.stringify(data), 'utf8', function (err) {
+      if (err) throw err;
+    });
+    res.send('修改成功')
+  })
+});
+
+app.get('/UserInfoRead', (req, res) => {
+  fs.readFile('user.json', 'utf8', (err, data) => {
+    if (err) throw err;
+    data = JSON.parse(data);
+    for(let i in data){
+      if (data[i].id == req.query.userID){
+        res.send(data[i])
+      }
+    }
+  })
 });

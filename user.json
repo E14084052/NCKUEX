@@ -1,11 +1,1 @@
-{
-    "id" : {
-        "family" : "學號",
-        "name" : "姓名",
-        "dep" : "科系",
-        "gua" : "系級",
-        "nickname" : "暱稱",
-        "pic" : "頭貼.png",
-        "award" : "卷哥認證1或0"
-        }
-}
+{"E14084052":{"id":"100122543081236715319","email":"e14084052@gs.ncku.edu.tw","name":"123","given_name":"李宗諺 LI,TSUNG-YEN","family_name":"E14084052","picture":"./img/userpic/小恐龍.png","award":"0"}}
