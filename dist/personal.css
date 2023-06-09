@@ -380,7 +380,7 @@
   background-image: url(./img/大考按鈕.png);
 }
 
-.personal #exam:hover{
+.personal #exam.active, .personal #exam:hover{
   background-image: url(./img/個人頁面_大考標籤.png);
 }
 
@@ -388,7 +388,7 @@
   background-image: url(./img/小考按鈕.png);
 }
 
-.personal #quiz:hover{
+.personal #quiz.active, .personal #quiz:hover{
   background-image: url(./img/個人頁面_小考標籤.png);
 }
 
@@ -396,7 +396,7 @@
   background-image: url(./img/作業按鈕.png);
 }
 
-.personal #homework:hover{
+.personal #homework.active, .personal #homework:hover{
   background-image: url(./img/個人頁面_作業標籤.png);
 }
 
@@ -404,7 +404,7 @@
   background-image: url(./img/其他按鈕.png);
 }
 
-.personal #other:hover{
+.personal #other.active, .personal #other:hover{
   background-image: url(./img/個人頁面_其他標籤.png);
 }
 
