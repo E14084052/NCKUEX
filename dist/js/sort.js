@@ -187,33 +187,35 @@ $('#search-box').on('blur', function() {
 /* ////////////////////////////////////// */
 /* ------------------------------------------------------------------------------------------------------------------------- */
   //真登入
-
   fetch('/UserInfo')
-    .then(response => response.json())
-    .then(data => {
-      $.get('/UserInfoRead', {
-        userID: data.id
-      }, (json) => {
-        console.log(json);
-        $('#user p').text(json.name);
-        $('#user .userpic img').attr('src', json.picture);
-        $('#logout p').text(json ? '登 出' : '登 入');
-      });
-    })
-    .catch(error => {
-      // 處理錯誤
-      console.error(error);
+  .then(response => response.json())
+  .then(data => {
+    $.get('/UserInfoRead', {
+      userID: data.id,
+    }, (json) => {
+      $('#user p').text(json.name);
+      $('#user .userpic img').attr('src', json.picture);
+      $('#login p').text('登 出');
+      $('#hi').css('display', 'block');
     });
+  })
+  .catch(error => {
+    // 處理錯誤
+    console.error(error);
+  });
 
   $('#login').click(function () {
-    fetch('/logout', { method: 'GET' })
-      .then(() => {
-        window.location.href = '/login.html';  // 執行前端重定向
-      })
-      .catch(error => {
-        // 處理錯誤
-        console.error(error);
-      });
+    if($('#login p').text()=='登 出'){
+      fetch('/logout', { method: 'GET' })
+        .then(() => {
+          window.location.href = '/login.html';  // 執行前端重定向
+        })
+        .catch(error => {
+          // 處理錯誤
+          console.error(error);
+        });
+    }
+    else{window.location.href = '/login.html';}
   });
 
   $('.userpic').click(function () {

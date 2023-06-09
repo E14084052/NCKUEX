@@ -98,10 +98,22 @@ function htmlWriter(data, id) {
   $('.name h4:eq(1)').text(data.name);
   $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block' : 'none'));
   $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block' : 'none'));
-  $('.uploader img:eq(0)').attr('src', './img/userpic/' + data.pic);
-  $('.uploader h4').text(data.up);
-  $('.uploader img:eq(1)').attr('style', 'opacity:' + (data.award == 1 ? 1 : 0));
+  console.log(htmlWriterUser(data.upid, function(result) {
+    console.log(result);
+  }));
+  // $('.uploader img:eq(0)').attr('src', './img/userpic/' + htmlWriterUser(data.upid)[0]);
+  // $('.uploader h4').text(htmlWriterUser(data.upid)[1]);
+  // $('.uploader img:eq(1)').attr('style', 'opacity:' + htmlWriterUser(data.upid)[2]);
   return $.html()
+}
+
+function htmlWriterUser(id) {
+  fs.readFile('./user.json', 'utf8', function (err, user) {
+    if (err) throw err;
+    user = JSON.parse(user);
+    console.log(user[id].name);
+    return user[id].name;
+  });
 }
 
 /* ////////////////////////////////////// */
@@ -419,6 +431,7 @@ app.get('/UserInfo', (req, res) => {
   res.send(req.session.user);
 });
 
+
 app.get('/UserInfoChange', (req, res) => {
   fs.readFile('user.json', 'utf8', (err, data) => {
     if (err) throw err;
@@ -427,6 +440,7 @@ app.get('/UserInfoChange', (req, res) => {
       if (data[i].id == req.query.userID){
         data[i].name = req.query.username;
         data[i].picture = req.query.userpic;
+        data[i].sign = "true";
         console.log(data[i]);
       }
     }
@@ -443,7 +457,7 @@ app.get('/UserInfoRead', (req, res) => {
     data = JSON.parse(data);
     for(let i in data){
       if (data[i].id == req.query.userID){
-        res.send(data[i])
+        res.send(data[i]);
       }
     }
   })

@@ -114,8 +114,8 @@ input:focus {
     width: auto;
     display: flex;
 }
-.sort #hi #login{
-    width: 45%;
+.sort #hi{
+    display: none;
 }
 .sort .userpic img{
     width: 1.5vw;

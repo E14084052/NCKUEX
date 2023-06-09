@@ -9,28 +9,38 @@ function login() {
     window.location.href = 'http://localhost:8888/auth/google';
 }
 
-/* ////////////////////////////////////// */
-
 $.get('/UserInfo',{
 },(data) => {
     if(data){
-        $('.modal').css('display', 'flex').css('opacity', '1');
         userID = data.id;
+        $('.modal').css('display', 'flex').css('opacity', '1');
     }
 })
+
 
 /* ////////////////////////////////////// */
 
 $('#done').click(function(){
-    console.log($('#username').val())
     $.get('/UserInfoChange',{
         userpic: $('#userpic').attr('src'),
         username: $('#username').val(),
         userID: userID
     },(data) => {
-        console.log(data);
         window.location.href = 'http://localhost:8888/sort.html'
     });
+})
+
+/* ////////////////////////////////////// */
+
+$('#quit').click(function(){
+    $('.modal').css('display', 'none').css('opacity', '0');
+    $.get('/logout',{
+    },(data) => {
+    });
+})
+
+$('#visitor').click(function(){
+    window.location.href = 'http://localhost:8888/sort.html'
 })
 
 /* ////////////////////////////////////// */
