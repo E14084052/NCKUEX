@@ -70,6 +70,7 @@ $('#clas').on('click', 'div', function(event) {
     if($(this).attr('id') == 'other'){clasTarget = '其他'}
 });
 
+
 /* ////////////////////////////////////// */
 
 function updateContent(target) {
