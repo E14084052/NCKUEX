@@ -141,7 +141,7 @@
     display: flex;
     justify-content: center;
     margin-top: 1.5vw;
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
 }
 
 .view #right.fixed {
@@ -170,7 +170,7 @@
 }
 
 .view #right div, .view #right img, .view #quit{
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
 }
 
 .view #right img.active{

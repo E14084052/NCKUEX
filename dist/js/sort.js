@@ -262,7 +262,6 @@ function showModal(page, id) {
     if (e.key == 'Escape' || e.key == ' ') {
     closeModal();
   }});
-  $('[data-target="upload"]').on('change', handleFileUpload);
 }
 
 function closeModal() {
@@ -279,7 +278,6 @@ function Page(page, id) {
 
 function viewPage(doc){
   $.get('/view' , {
-    userID: userID,
     doc: doc
   }, (data) => {
     $('#' + doc + '.view').html(data[0]);
@@ -324,8 +322,8 @@ function Interactive(iff){
   if (iff) {$('.view #like img').toggleClass('active');}
   else {
     $('.view #like').css('cursor', 'pointer').hover(
-      function(){$(this).css('transform', 'scale(1.2)')},
-      function(){$(this).css('transform', 'scale(1)')}
+      function(){$(this).find('img').css('background-color', '#81D6FA')},
+      function(){$(this).find('img').css('background-color', '#181818')}
     )
   }
 }

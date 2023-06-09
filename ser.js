@@ -75,7 +75,7 @@ app.get('/documentSearch', (req, res) => {
         data[id].lec.includes(req.query.search) ||
         data[id].teac.includes(req.query.search) ||
         data[id].clas.includes(req.query.search) ||
-        data[id].up.includes(req.query.search)
+        data[id].upid.includes(req.query.search)
       ) {
         HTML += htmlWriter(data[id], id)
       }
@@ -152,7 +152,9 @@ app.get('/updateteacher', (req, res) => {
     let HTML = '';
     for (let id in data) {
       if (data[id].name == req.query.lec) {
-        // HTML += '<li>' + data[id].teac + '</li>';
+        for (let i in data[id].teacher) {
+          HTML += '<li>' + data[id].teacher[i] + '</li>';
+        }
       }
     }
     res.send(HTML);
@@ -174,7 +176,7 @@ app.get('/view', (req, res) => {
       $('#year').text('年份 | ' + data[req.query.doc].year);
       $('#clas').text('類別 | ' + data[req.query.doc].clas);
       $('#userpic img').attr('src', './img/userpic/' + data[req.query.doc].pic);
-      $('#up').text(data[req.query.doc].up);
+      //$('#up').text(data[req.query.doc].up);
       $('#download a').attr('href', './upload/' + data[req.query.doc].url);
       let like = data[req.query.doc].like.user.includes(req.query.userID);
       res.send([$.html(), like]);
@@ -298,7 +300,6 @@ app.get('/auth/google', (req, res) => {
     ].join(' ')
   }
   const auth_url = 'https://accounts.google.com/o/oauth2/v2/auth'
-  // console.log(`${auth_url}?${querystring.stringify(query)}`)
   res.redirect(`${auth_url}?${querystring.stringify(query)}`) // 將Grant傳到uri
 })
 
@@ -341,7 +342,6 @@ app.get('/welcome', auth, (req, res) => {
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  console.log(req.session);
   res.clearCookie("user");
   res.redirect('/login.html');
   console.log('log out successfully!');
@@ -363,14 +363,14 @@ function saveUserData(userData, req) {
   // 判斷是否已註冊
   if (jsonData.hasOwnProperty(userData.family_name)) {
     let student_id = userData.family_name;
-    console.log("Welcome back ", jsonData[student_id].given_name, `from ${req.ip}`);
+    // console.log("Welcome back ", jsonData[student_id].given_name, `from ${req.ip}`);
     return;
   }
   delete userData["verified_email"];
   delete userData["locale"];
   delete userData["hd"];
 
-
+  userData.picture = "./img/userpic/小恐龍.png"
   userData.award = "0";
 
   // 將新的使用者資料以 "family_name" 屬性值為主鍵加入 jsonData 物件
@@ -405,30 +405,88 @@ const upload = multer({ storage: storage });
 
 // 處理檔案上傳和資訊輸入的請求
 app.post('/upload', upload.single('file'), (req, res) => {
-  console.log("上傳檔案...");
-  let upload_info = JSON.parse(req.body.upload_info);
-  console.log(upload_info.dep);
   // 取得使用者輸入的檔案資訊
-  // const { filename, courseName, category, teacher } = req.body;
-  const { dep, lec, clas, teacher, year } = upload_info;
-  const file = req.file;
+  let doc_info = req.body.doc_info.split(',');
+  const [col, dep, grade, lec, teac, year, clas] = doc_info;
+  const file = req.file, filename = file.originalname;
   const extname = path.extname(file.originalname);
-  fs.rename(file.path, file.destination + year + lec + "_" + teacher + "_" + clas + "_" + dep + "_" + Date.now() + extname, function (err) {
+  const label = Date.now();
+
+  res.redirect("/upload2JSON?col=" + col + "&dep=" +
+    dep + "&grade=" + grade + "&lec=" + lec + "&teac=" +
+    teac + "&year=" + year + "&clas=" + clas +
+    "&filename=" + filename + "&label=" + label);
+
+});
+
+app.get('/upload2JSON', (req, res) => {
+  const { col, dep, grade, lec, teac, year, clas, filename, label } = req.query;
+  const data = {
+    [label]: {
+      name: filename,
+      url: filename,
+      year,
+      dep,
+      lec,
+      teac,
+      clas,
+      upid: req.session.user.family_name,
+      like: {
+        count: 0,
+        user: ""
+      },
+      tagA: { score: 0, user: "" },
+      tagB: { score: 0, user: "" }
+    }
+  };
+
+  fs.readFile('document.json', 'utf-8', (err, fileData) => {
     if (err) {
-      res.send("重命名錯誤");
+      console.error(err);
+      res.send("讀取 JSON 檔案失敗");
     } else {
-      res.send("檔案上傳成功");
+      let existingData = {};
+      try {
+        existingData = JSON.parse(fileData);
+      } catch (err) {
+        console.error(err);
+      }
+
+      existingData = { ...existingData, ...data };
+
+      fs.writeFile('document.json', JSON.stringify(existingData), (err) => {
+        if (err) {
+          console.error(err);
+          res.send("寫入 JSON 檔案失敗");
+        } else {
+          console.log("JSON 檔案寫入成功");
+          res.send("上傳成功");
+        }
+      });
     }
   });
 });
+
+
+
+
 /**/
 
 
 /*登入後使用者資訊*/
-
 // 把UserInfo送到前端
 app.get('/UserInfo', (req, res) => {
   res.send(req.session.user);
+});
+
+app.get('/UserInfo_pic', (req, res) => {
+  fs.readFile('./user.json', 'utf8', function (err, data) {
+    data = JSON.parse(data);
+    let user = req.session.user;
+    try {
+      res.send(data[user.family_name].picture);
+    } catch (err) { }
+  })
 });
 
 
