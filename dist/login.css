@@ -181,6 +181,14 @@ footer{
     justify-content: center;
     align-items: center;
 }
+footer>p4, div>p1, div>p2, div>p3, div>img, div>li{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+scan {
+    white-space: nowrap;
+}
 
 /* ////////////////////////////////////// */
 

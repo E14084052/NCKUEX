@@ -68,7 +68,8 @@ app.get('/documentSearch', (req, res) => {
   fs.readFile('./document.json', 'utf8', function (err, data) {
     if (err) throw err;
     data = JSON.parse(data);
-    let HTML = '';
+    let promises = []; // 保存所有异步操作的 Promise
+
     for (let id in data) {
       if (data[id].name.includes(req.query.search) ||
         data[id].dep.includes(req.query.search) ||
@@ -77,17 +78,29 @@ app.get('/documentSearch', (req, res) => {
         data[id].clas.includes(req.query.search) ||
         data[id].upid.includes(req.query.search)
       ) {
-        HTML += htmlWriter(data[id], id)
+        promises.push(htmlWriter(data[id], id));
       }
     }
-    if (HTML == '') {
-      HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
-    }
-    res.send(HTML);
+
+    Promise.all(promises)
+      .then(htmls => {
+        let HTML = htmls.join('');
+
+        if (HTML == '') {
+          HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
+        }
+
+        res.send(HTML);
+      })
+      .catch(error => {
+        console.error(error);
+        res.send('出错了');
+      });
   });
 });
 
-function htmlWriter(data, id) {
+
+async function htmlWriter(data, id) {
   const html = fs.readFileSync('./dist/html/document.html', 'utf8');
   const $ = cheerio.load(html);
   $('.document').attr('id', id);
@@ -98,23 +111,22 @@ function htmlWriter(data, id) {
   $('.name h4:eq(1)').text(data.name);
   $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block' : 'none'));
   $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block' : 'none'));
-  console.log(htmlWriterUser(data.upid, function(result) {
-    console.log(result);
-  }));
-  // $('.uploader img:eq(0)').attr('src', './img/userpic/' + htmlWriterUser(data.upid)[0]);
-  // $('.uploader h4').text(htmlWriterUser(data.upid)[1]);
-  // $('.uploader img:eq(1)').attr('style', 'opacity:' + htmlWriterUser(data.upid)[2]);
+  let user;
+  user = await htmlWriterUser(data.upid);
+  $('.uploader h4').text(user[0]);
+  $('.uploader img:eq(0)').attr('src', user[1]);
+  $('.uploader img:eq(1)').attr('style', 'opacity:' + user[2]);
   return $.html()
 }
 
-function htmlWriterUser(id) {
-  fs.readFile('./user.json', 'utf8', function (err, user) {
-    if (err) throw err;
-    user = JSON.parse(user);
-    console.log(user[id].name);
-    return user[id].name;
+async function htmlWriterUser(id) {
+  return new Promise((resolve, reject) => {
+    fs.readFile('./user.json', 'utf8', function (err, user) {
+      if (err) reject(err);
+      user = JSON.parse(user);
+      resolve([user[id].name, user[id].picture, user[id].award]);
   });
-}
+})}
 
 /* ////////////////////////////////////// */
 app.get('/updatelecture', (req, res) => {
@@ -267,13 +279,12 @@ app.use(session({
   saveUninitialized: false,
   resave: true,
 }));
+
 /*MiddleWare*/
 function auth(req, res, next) {
   if (req.session.user) {
-    console.log('authenticated')
     next()
   } else {
-    console.log('not authenticated')
     return res.redirect('/')
   }
 }
@@ -329,22 +340,48 @@ app.get('/auth/google/callback', async (req, res) => {
   req.session.user = getData.data // 加密的cookie
 
   res.redirect('/welcome');
-  console.log("login success");
   saveUserData(getData.data, req)
 
 })
 
+function ADDloginCnt(studentID, req) {
+  fs.readFile('user.json', 'utf8', (err, jsonString) => {
+    if (err) {
+      console.log('Error reading file:', err);
+      return;
+    }
+
+    try {
+      const data = JSON.parse(jsonString);
+      data[studentID]["loginCnt"]++;
+      // 更新user.json文件
+      fs.writeFile('user.json', JSON.stringify(data), 'utf8', (err) => {
+        if (err) {
+          console.log('Error writing file:', err);
+          return;
+        }
+      })
+    }
+    catch (error) {
+      console.log('Error parsing JSON:', error);
+    }
+  });
+}
+
 app.get('/welcome', auth, (req, res) => {
   const userName = req.session.user.given_name
-  console.log("Welcom back: ", userName);
+  const studentID = req.session.user.family_name;
+  ADDloginCnt(studentID, req);
+
+  console.log(`${userName} 已登入`);
   res.redirect('/login.html')
 })
 
 app.get('/logout', (req, res) => {
+  console.log(`${req.session.user.given_name} 已登出`);
   req.session.destroy();
   res.clearCookie("user");
   res.redirect('/login.html');
-  console.log('log out successfully!');
 })
 
 /*------------------把新註冊使用者資料註冊進JSON------------------*/
@@ -361,17 +398,15 @@ function saveUserData(userData, req) {
   }
 
   // 判斷是否已註冊
-  if (jsonData.hasOwnProperty(userData.family_name)) {
-    let student_id = userData.family_name;
-    // console.log("Welcome back ", jsonData[student_id].given_name, `from ${req.ip}`);
-    return;
-  }
+  if (jsonData.hasOwnProperty(userData.family_name)) return;
   delete userData["verified_email"];
   delete userData["locale"];
   delete userData["hd"];
 
+  userData.dep_year = Dep_Year(userData.family_name);
   userData.picture = "./img/userpic/小恐龍.png"
   userData.award = "0";
+  userData.loginCnt = 0;
 
   // 將新的使用者資料以 "family_name" 屬性值為主鍵加入 jsonData 物件
   jsonData[userData.family_name] = userData;
@@ -386,6 +421,68 @@ function saveUserData(userData, req) {
   });
 }
 
+function Dep_Year(studentID) {
+  const id = studentID.substring(0, 2);
+  var dep = "雜系ㄏㄏ";
+  if (id == "E7") dep = "建築系"
+  else if (id == "F2") dep = "都計"
+  else if (id == "F3") dep = "工設"
+  else if (id == "FZ") dep = "規設"
+  else if (id == "E0") dep = "工院"
+  else if (id == "E1") dep = "機械"
+  else if (id == "E3") dep = "化工"
+  else if (id == "E4") dep = "資源"
+  else if (id == "E5") dep = "材料"
+  else if (id == "E6") dep = "土木"
+  else if (id == "E8") dep = "水利"
+  else if (id == "E9") dep = "工科"
+  else if (id == "F0") dep = "能源"
+  else if (id == "F1") dep = "系統"
+  else if (id == "F4") dep = "航太"
+  else if (id == "F5") dep = "環工"
+  else if (id == "F6") dep = "測量"
+  else if (id == "F9") dep = "醫工"
+  else if (id == "D0") dep = "社科"
+  else if (id == "D2") dep = "法律"
+  else if (id == "D4") dep = "政治"
+  else if (id == "D5") dep = "經濟"
+  else if (id == "D8") dep = "心理"
+  else if (id == "I2") dep = "護理"
+  else if (id == "I3") dep = "醫技"
+  else if (id == "I5") dep = "醫學"
+  else if (id == "I6") dep = "物治"
+  else if (id == "I7") dep = "職治"
+  else if (id == "I8") dep = "藥學"
+  else if (id == "I9") dep = "牙醫"
+  else if (id == "H1") dep = "會計"
+  else if (id == "H2") dep = "統計"
+  else if (id == "H3") dep = "工資"
+  else if (id == "H4") dep = "企管"
+  else if (id == "H5") dep = "交管"
+  else if (id == "HZ") dep = "管院"
+  else if (id == "B0") dep = "文院"
+  else if (id == "B1") dep = "中文"
+  else if (id == "B2") dep = "外文"
+  else if (id == "B3") dep = "歷史"
+  else if (id == "B5") dep = "台文"
+  else if (id == "C1") dep = "數學"
+  else if (id == "C2") dep = "物理"
+  else if (id == "C3") dep = "化學"
+  else if (id == "C4") dep = "地科"
+  else if (id == "CZ") dep = "理學院"
+  else if (id == "F8") dep = "光電"
+  else if (id == "E2") dep = "電機"
+  else if (id == "F7") dep = "資訊"
+  else if (id == "C5") dep = "生科"
+  else if (id == "C6") dep = "生技"
+  else if (id == "J0") dep = "敏求"
+  else if (id == "AN") dep = "不分系"
+  else if (id == "C0") dep = "科學班"
+
+  const year = 100 + parseInt(studentID.substring(3, 5)) + 4;
+  if (id == "I5") year += 2;
+  return dep + year.toString();
+}
 
 /*------------------File Upload Test Block------------------*/
 import multer from "multer";
@@ -466,14 +563,9 @@ app.get('/upload2JSON', (req, res) => {
     }
   });
 });
-
-
-
-
 /**/
 
-
-/*登入後使用者資訊*/
+/*---------------登入後使用者資訊---------------*/
 // 把UserInfo送到前端
 app.get('/UserInfo', (req, res) => {
   res.send(req.session.user);
@@ -489,17 +581,27 @@ app.get('/UserInfo_pic', (req, res) => {
   })
 });
 
+app.get('/UserInfo_JSON', (req, res) => {
+  fs.readFile('./user.json', 'utf8', function (err, data) {
+    data = JSON.parse(data);
+    let user = req.session.user;
+    try {
+      // console.log(data[user.family_name]);
+      res.send(data[user.family_name]);
+    } catch (err) { }
+  })
+});
 
+/*-----------------改名小視窗-----------------*/
 app.get('/UserInfoChange', (req, res) => {
   fs.readFile('user.json', 'utf8', (err, data) => {
     if (err) throw err;
     data = JSON.parse(data);
-    for(let i in data){
-      if (data[i].id == req.query.userID){
+    for (let i in data) {
+      if (data[i].id == req.query.userID) {
         data[i].name = req.query.username;
         data[i].picture = req.query.userpic;
         data[i].sign = "true";
-        console.log(data[i]);
       }
     }
     fs.writeFile('./user.json', JSON.stringify(data), 'utf8', function (err) {
@@ -513,10 +615,28 @@ app.get('/UserInfoRead', (req, res) => {
   fs.readFile('user.json', 'utf8', (err, data) => {
     if (err) throw err;
     data = JSON.parse(data);
-    for(let i in data){
-      if (data[i].id == req.query.userID){
+    for (let i in data) {
+      if (data[i].id == req.query.userID) {
         res.send(data[i]);
       }
     }
+  })
+})
+
+app.get('/NickName', (req, res) => {
+  fs.readFile('user.json', 'utf8', (err, data) => {
+    if (err) throw err;
+
+    data = JSON.parse(data);
+    try {
+      const studentID = req.session.user.family_name;
+      if (data[studentID].loginCnt == 1)
+        res.send("Edit nickname");
+      else
+        res.send("Login");
+
+    } catch (err) { }
+
+
   })
 });
