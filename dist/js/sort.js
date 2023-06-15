@@ -122,7 +122,7 @@ $(document).ready(function () {
   $('#year h4').click(function () {
     if ($('#documentcontainer').css('display') == 'block') {
       $('#like .triangle').addClass('inactive');
-      if($('#like .triangle').hasClass('reverse')){
+      if ($('#like .triangle').hasClass('reverse')) {
         $('#like .triangle').removeClass('reverse')
         likeOrder = 1;
       }
@@ -147,7 +147,7 @@ $(document).ready(function () {
 
   function likesort() {
     $('#year .triangle').addClass('inactive');
-    if($('#year .triangle').hasClass('reverse')){
+    if ($('#year .triangle').hasClass('reverse')) {
       $('#year .triangle').removeClass('reverse')
       yearOrder = 1;
     }
@@ -163,13 +163,13 @@ $(document).ready(function () {
     $('#documentcontainer').append(documents);
   }
 
-  function sortInitial(){
+  function sortInitial() {
     $('#year .triangle, #like .triangle').addClass('inactive')
-    if($('#year .triangle').hasClass('reverse')){
+    if ($('#year .triangle').hasClass('reverse')) {
       $('#year .triangle').removeClass('reverse')
       yearOrder = 1;
     }
-    if($('#like .triangle').hasClass('reverse')){
+    if ($('#like .triangle').hasClass('reverse')) {
       $('#like .triangle').removeClass('reverse')
       likeOrder = 1;
     }
@@ -364,16 +364,32 @@ $(document).ready(function () {
     }, 100);
   }
 
-  $(document).on('click', '.personal .edit', function() {
+  $(document).on('click', '.personal .edit', function () {
     console.log('556515')
     let infochange = $('<div>').addClass('infochange');
     $('body').append(infochange);
     $.get('/infochange', {
     }, (data) => {
-        $('.infochange').html(data);
+      $('.infochange').html(data);
     });
     $('.infochange').css('display', 'flex').css('opacity', '1');
-})
+  })
+
+  $(document).on('click', '.personal #done', function () {
+    $.get('/UserInfoChange', {
+      // userpic: $('#userpic').attr('src'),
+      username: $('#username').val(),
+      userID: userID
+    }, (data) => {
+    });
+  })
+
+  $(document).on('click', '.personal #quit', function () {
+    $('.modal').css('display', 'none').css('opacity', '0');
+    $.get('/logout', {
+    }, (data) => {
+    });
+  })
 
   /* ////////////////////////////////////// */
 
