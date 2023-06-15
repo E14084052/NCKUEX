@@ -244,7 +244,8 @@ $('#search-box').on('blur', function() {
 //預覽視窗
 
 $(document).on('click', '.document', function() {
-  showModal('view',  $(this).attr('id'));
+  showModal('view', $(this).attr('id'));
+  console.log($(this).find('.uploader h4').attr('id'));
 });
 
 $(document).on('click', '.view #quit', function() {
@@ -385,7 +386,6 @@ function like(iff){
 
 let rff;
 function active_rate(iff) {
-  console.log(iff);
   if(iff != undefined){rff = iff}
   $('.view #rate').hover(
     function() {

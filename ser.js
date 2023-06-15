@@ -122,7 +122,7 @@ async function htmlWriter(data, id) {
   $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block' : 'none'));
   $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block' : 'none'));
   let user = await htmlUser(data.upid);
-  $('.uploader h4').text(user[0]);
+  $('.uploader h4').text(user[0]).attr('id', data.upid);
   $('.uploader img:eq(0)').attr('src', user[1]);
   $('.uploader img:eq(1)').attr('style', 'opacity:' + user[2]);
   return $.html()
