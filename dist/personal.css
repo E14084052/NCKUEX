@@ -111,6 +111,7 @@
 
 .personal .pic img{ 
   height: 9.5vw; 
+  border-radius: 50%;
 } 
 
 .personal .nickname{ 
@@ -238,10 +239,6 @@
   background-size: 100%;
   background-repeat: no-repeat;
   width: 47.5vw;
-}
-
-.personal .upload_info{
-  /* display: none; */
 }
 
 .personal .upload_container{
@@ -387,7 +384,7 @@
   background-image: url(./img/大考按鈕.png);
 }
 
-.personal #exam:hover{
+.personal #exam:hover, .personal #exam.active{
   background-image: url(./img/個人頁面_大考標籤.png);
 }
 
@@ -395,7 +392,7 @@
   background-image: url(./img/小考按鈕.png);
 }
 
-.personal #quiz:hover{
+.personal #quiz:hover, .personal #quiz.active{
   background-image: url(./img/個人頁面_小考標籤.png);
 }
 
@@ -403,7 +400,7 @@
   background-image: url(./img/作業按鈕.png);
 }
 
-.personal #homework:hover{
+.personal #homework:hover, .personal #homework.active{
   background-image: url(./img/個人頁面_作業標籤.png);
 }
 
@@ -411,7 +408,7 @@
   background-image: url(./img/其他按鈕.png);
 }
 
-.personal #other:hover{
+.personal #other:hover, .personal #other.active{
   background-image: url(./img/個人頁面_其他標籤.png);
 }
 

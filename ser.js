@@ -223,17 +223,30 @@ app.get('/personal', (req, res) => {
   })
 });
 
-app.get('/others', (req, res) => {
-  fs.readFile('./dist/others.html', 'utf8', function (err, html) {
+app.get('/loading', (req, res) => {
+  fs.readFile('./dist/html/loading.html', 'utf8', function (err, html) {
     if (err) throw err;
     res.send(html);
   })
 });
 
-app.get('/loading', (req, res) => {
-  fs.readFile('./dist/html/loading.html', 'utf8', function (err, html) {
+/* ////////////////////////////////////// */
+
+app.get('/others', (req, res) => {
+  fs.readFile('./dist/others.html', 'utf8', function (err, html) {
     if (err) throw err;
-    res.send(html);
+    fs.readFile('./user.json', 'utf8', function (err, user) {
+      if (err) throw err;
+      user = JSON.parse(user);
+      const $ = cheerio.load(html);
+      $('.pic img').attr('src', user[req.query.userID].picture);
+      $('.nickname p').text(user[req.query.userID].name)
+      var chineseName = user[req.query.userID].given_name.replace(/[^\u4E00-\u9FA5]/g, '');
+      $('.name p').text(chineseName);
+      $('.dep p').text(user[req.query.userID].dep_year);
+      $('.fire').css('display', (user[req.query.userID].award === 1 ? 'block' : 'none'))
+      res.send($.html());
+    });
   })
 });
 

@@ -193,7 +193,6 @@ $('#search-box').on('blur', function() {
     fetch('/UserInfo_pic')
       .then(response => response.text())
       .then(data => {
-        console.log("UserInfo_pic", data);
         $('#user .userpic img').attr('src', data);
       })
       .catch(error => {
@@ -345,7 +344,6 @@ $(document).on('click', '.others #null, .others .back_button', function() {
 let userID;
 $.get('/UserInfo' , {},(user) => {
   userID = user.family_name
-  console.log(userID);
 });
 
 function active_like(iff) {
@@ -424,6 +422,8 @@ $(document).click(function(event) {
     active_rate(rff)
   }
 })
+
+
 
 let ratescore = [0, 0];
 function active_rateUI(tar) {

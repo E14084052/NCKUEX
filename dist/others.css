@@ -110,7 +110,8 @@
 } 
 
 .others .pic img{ 
-  height: 9.5vw; 
+  height: 9.5vw;
+  border-radius: 50%;
 } 
 
 .others .nickname{ 
