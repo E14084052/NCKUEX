@@ -51,16 +51,26 @@ app.get('/documentSelect', (req, res) => {
   fs.readFile('./document.json', 'utf8', function (err, data) {
     if (err) throw err;
     data = JSON.parse(data);
-    let HTML = '';
+    let promises = [];
     for (let id in data) {
       if (data[id].lec == req.query.lec && data[id].clas == req.query.clas) {
-        HTML += htmlWriter(data[id]);
+        promises.push(htmlWriter(data[id], id));
       }
     }
-    if (HTML == '') {
-      HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
-    }
-    res.send(HTML);
+    Promise.all(promises)
+      .then(htmls => {
+        let HTML = htmls.join('');
+
+        if (HTML == '') {
+          HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
+        }
+
+        res.send(HTML);
+      })
+      .catch(error => {
+        console.error(error);
+        res.send('出错了');
+      });
   });
 });
 
@@ -69,7 +79,7 @@ app.get('/documentSearch', (req, res) => {
     if (err) throw err;
     data = JSON.parse(data);
     let promises = []; // 保存所有异步操作的 Promise
-
+    
     for (let id in data) {
       if (data[id].name.includes(req.query.search) ||
         data[id].dep.includes(req.query.search) ||
@@ -111,15 +121,14 @@ async function htmlWriter(data, id) {
   $('.name h4').text(data.name);
   $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block' : 'none'));
   $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block' : 'none'));
-  let user;
-  user = await htmlWriterUser(data.upid);
+  let user = await htmlUser(data.upid);
   $('.uploader h4').text(user[0]);
   $('.uploader img:eq(0)').attr('src', user[1]);
   $('.uploader img:eq(1)').attr('style', 'opacity:' + user[2]);
   return $.html()
 }
 
-async function htmlWriterUser(id) {
+async function htmlUser(id) {
   return new Promise((resolve, reject) => {
     fs.readFile('./user.json', 'utf8', function (err, user) {
       if (err) reject(err);
@@ -187,11 +196,15 @@ app.get('/view', (req, res) => {
       $('#teac').text('教師 | ' + data[req.query.doc].teac);
       $('#year').text('年份 | ' + data[req.query.doc].year);
       $('#clas').text('類別 | ' + data[req.query.doc].clas);
-      $('#userpic img').attr('src', './img/userpic/' + data[req.query.doc].pic);
-      //$('#up').text(data[req.query.doc].up);
+      //$('#userpic img').attr('src', './img/userpic/' + data[req.query.doc].pic);
+      //$('#up').text(req.query.uploader);
       $('#download a').attr('href', './upload/' + data[req.query.doc].url);
       let like = data[req.query.doc].like.user.includes(req.query.userID);
-      res.send([$.html(), like]);
+      let rate = false;
+      if(data[req.query.doc].tagA.user[req.query.userID]){rate = true};
+      if(like) {$('#like img:eq(0)').attr('src', './img/like2.png')}
+      if(rate) {$('#rate img:eq(0)').attr('src', './img/rate2.png')}
+      res.send([$.html(), like, rate]);
     });
   })
 });
@@ -217,60 +230,49 @@ app.get('/like', (req, res) => {
     if (err) throw err;
     data = JSON.parse(data);
     if (data[req.query.doc].like.user.includes(req.query.userID)) {
-      res.send('已讚')
+      const index = data[req.query.doc].like.user.indexOf(req.query.userID);
+      if (index > -1) {
+        data[req.query.doc].like.user.splice(index, 1);
+      }
+      data[req.query.doc].like.count = data[req.query.doc].like.user.length;
+      fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function (err) {
+        if (err) throw err;
+      });
+      res.send('倒讚幫')
     }
     else {
       data[req.query.doc].like.user.push(req.query.userID);
       data[req.query.doc].like.count = data[req.query.doc].like.user.length;
       fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function (err) {
         if (err) throw err;
+        res.send('按讚成功')
       });
-      res.send('按讚成功')
     }
   });
 });
 
-app.get('/tagA', (req, res) => {
+/* ////////////////////////////////////// */
+
+app.get('/rate', (req, res) => {
   fs.readFile('document.json', 'utf8', (err, data) => {
     if (err) throw err;
     data = JSON.parse(data);
-    // if (req.query.userID in data[req.query.doc].tagA.user) {
-    //   res.send('已評分')
-    //  }
-    // else{
-    data[req.query.doc].tagA.user[req.query.userID] = req.query.score;
-    let score = 0;
+    data[req.query.doc].tagA.user[req.query.userID] = req.query.score[0];
+    let scoreA = 0;
     for (let id in data[req.query.doc].tagA.user) {
-      score += parseInt(data[req.query.doc].tagA.user[id]);
+      scoreA += parseInt(data[req.query.doc].tagA.user[id]);
     }
-    data[req.query.doc].tagA.score = score / Object.keys(data[req.query.doc].tagA.user).length;
-    fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function (err) {
-      if (err) throw err;
-      res.send('評分成功');
-    });
-    //}
-  });
-});
-
-app.get('/tagB', (req, res) => {
-  fs.readFile('document.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    data = JSON.parse(data);
-    // if (req.query.userID in data[req.query.doc].tagB.user) {
-    //   res.send('已評分')
-    //  }
-    // else{
-    data[req.query.doc].tagB.user[req.query.userID] = req.query.score;
-    let score = 0;
+    data[req.query.doc].tagA.score = scoreA / Object.keys(data[req.query.doc].tagA.user).length;
+    data[req.query.doc].tagB.user[req.query.userID] = req.query.score[1];
+    let scoreB = 0;
     for (let id in data[req.query.doc].tagB.user) {
-      score += parseInt(data[req.query.doc].tagB.user[id]);
+      scoreB += parseInt(data[req.query.doc].tagB.user[id]);
     }
-    data[req.query.doc].tagB.score = score / Object.keys(data[req.query.doc].tagB.user).length;
+    data[req.query.doc].tagB.score = scoreB / Object.keys(data[req.query.doc].tagB.user).length;
     fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function (err) {
       if (err) throw err;
       res.send('評分成功');
     });
-    //}
   });
 });
 

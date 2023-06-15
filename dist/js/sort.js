@@ -294,10 +294,12 @@ function Page(page, id) {
 
 function viewPage(doc){
   $.get('/view' , {
+    userID: userID,
     doc: doc
   }, (data) => {
     $('#' + doc + '.view').html(data[0]);
-    Interactive(data[1])
+    active_like(data[1])
+    active_rate(data[2])
     viewScroll()
     renderPDF($('#download a').attr('href'), doc);
   });
@@ -335,19 +337,35 @@ function viewScroll(){
 /* ////////////////////////////////////// */
 //倒讚幫
 
-function Interactive(iff){
-  if (iff) {$('.view #like img').toggleClass('active');}
-  else {
-    $('.view #like').css('cursor', 'pointer').hover(
-      function(){$(this).find('img').css('background-color', '#81D6FA')},
-      function(){$(this).find('img').css('background-color', '#181818')}
-    )
-  }
+let userID;
+$.get('/UserInfo' , {},(user) => {
+  userID = user.family_name
+  console.log(userID);
+});
+
+function active_like(iff) {
+  $('.view #like').hover(
+    function() {
+      $(this).find('img').attr('src', './img/like3.png');
+    },
+    function() {
+      if (iff) {
+        $(this).find('img').attr('src', './img/like2.png');
+      } else {
+        $(this).find('img').attr('src', './img/like1.png');
+      }
+    }
+  );
+  $('.view #like').off('click').click(function() {
+    $('.view #like').off('mouseenter mouseleave');
+    like(iff);
+  });
 }
 
-$(document).on('click', '.view #like', function() {
+
+function like(iff){
   $('html').css('cursor', 'wait');
-  $.get('/like' , {
+  $.get('/like', {
     userID: userID,
     doc: $('.modal.view').attr('id')
   }, (data) => {
@@ -357,42 +375,102 @@ $(document).on('click', '.view #like', function() {
       documentSelect();
       documentSearch();
       $('html').css('cursor', '');
-      $('.view #like img').toggleClass('active');
+      active_like(!iff);
     }, 100);
   });
-})
+}
 
 /* ////////////////////////////////////// */
 //五星好評
 
-$(document).on('click', '.view #rate', function() {
-  $('.view #rate').addClass('active');
-  rateStar('A');
-  rateStar('B');
-})
+let rff;
+function active_rate(iff) {
+  console.log(iff);
+  if(iff != undefined){rff = iff}
+  $('.view #rate').hover(
+    function() {
+      $(this).find('img').first().attr('src', './img/rate3.png');
+    },
+    function() {
+      if (rff) {
+        $(this).find('img').first().attr('src', './img/rate2.png');
+      } else {
+        $(this).find('img').first().attr('src', './img/rate1.png');
+      }
+    }
+  );
+  $('.view #rate').click(function() {
+    $(this).off('mouseenter mouseleave');
+    $(this).addClass('active');
+    active_rateUI(0)
+    active_rateUI(1)
+    rate()
+    $('.view #rate').off('click')
+  });
+}
 
 $(document).click(function(event) {
   if (!$(event.target).closest('.view #rate').length) {
     $('.view #rate').removeClass('active');
+    if (rff) {
+      $('.view #rate').find('img').first().attr('src', './img/rate2.png');
+    } else {
+      $('.view #rate').find('img').first().attr('src', './img/rate1.png');
+    }
+    active_rate(rff)
   }
 })
 
-function rateStar(tar){
-  $('.view #rate' + tar).on('click', '.star', function() {
+let ratescore = [0, 0];
+function active_rateUI(tar) {
+  let ratelist = $('.view #rate').find('.ratelist').eq(tar);
+  ratelist.find('.star:not(.active)').hover(
+    function() {
+      $(this).find('img').attr('src', './img/star2.png');
+      $(this).nextAll('.star:not(.active)').find('img').attr('src', './img/star2.png');
+    },
+    function() {
+      $(this).find('img').attr('src', './img/star.png');
+      $(this).nextAll('.star:not(.active)').find('img').attr('src', './img/star.png');
+    }
+  );
+  ratelist.find('.star').click(function() {
+    ratelist.find('.star').removeClass('active').find('img').attr('src', './img/star.png');
+    $(this).addClass('active').find('img').attr('src', './img/star2.png');
+    $(this).nextAll('.star').addClass('active').find('img').attr('src', './img/star2.png');
+    ratelist.find('.star').off('mouseenter mouseleave');
+    ratescore[tar] = 6 - $(this).index();
+    active_rateUI(tar)
+  });
+}
+
+
+function rate(iff){
+  $('.view #rate').find('.check').hover(
+    function() {
+      $(this).find('img').first().attr('src', './img/Group198.png');
+    },
+    function() {
+      $(this).find('img').first().attr('src', './img/Group197.png');
+    }
+  )
+  $('.view #rate').find('.check').off('click').click(function() {
     $('html').css('cursor', 'wait');
-    $('.view #rate' + tar + ' .star').removeClass('active');
-    $(this).toggleClass('active');
-    $.get('/tag' + tar + '' , {
+    $.get('/rate', {
+      score: ratescore,
       userID: userID,
-      score: 5 - $(this).index(),
       doc: $('.modal.view').attr('id')
     }, (data) => {
       setTimeout(function() {
         console.log(data);
+        $('#documentcontainer').empty();
+        documentSelect();
+        documentSearch();
         $('html').css('cursor', '');
+        active_rate(!iff);
       }, 100);
     });
-  });
+  })
 }
 
 /* ////////////////////////////////////// */
