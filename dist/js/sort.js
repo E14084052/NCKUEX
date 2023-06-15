@@ -376,7 +376,7 @@ $(document).ready(function () {
     $('.infochange').css('display', 'flex').css('opacity', '1');
   })
 
-  $(document).on('click', '.personal #done', function () {
+  $(document).on('click', '.personal .infochange #done', function () {
     $.get('/UserInfoChange', {
       // userpic: $('#userpic').attr('src'),
       username: $('#username').val(),
@@ -385,7 +385,7 @@ $(document).ready(function () {
     });
   })
 
-  $(document).on('click', '.personal #quit', function () {
+  $(document).on('click', '.personal .infochange #quit', function () {
     $('.modal').css('display', 'none').css('opacity', '0');
     $.get('/logout', {
     }, (data) => {
