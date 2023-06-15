@@ -123,10 +123,12 @@
   font-size: 1.35vw;  
   letter-spacing: 0.1em; 
   line-height: 2; 
+  /* text-align: center;  */
 } 
 
 .personal .fire img{
   height: 1.7vw;
+  /* margin-left: 0.5vw; */
   cursor: pointer;
 }
 
@@ -238,12 +240,15 @@
   width: 47.5vw;
 }
 
+.personal .upload_info{
+  /* display: none; */
+}
+
 .personal .upload_container{
-    /* display: none; */
+  display: none;
 }
 
 .personal .upload_info{
-  display: none;
   background-image: url(./img/上傳區外框.png);
   background-size: 100%;
   background-repeat: no-repeat;
@@ -265,6 +270,7 @@
 .personal .row{
   display: flex;
   align-items: center;
+  /* height: 4vw; */
 }
 
 .personal .row p, .personal .row li{
@@ -381,7 +387,7 @@
   background-image: url(./img/大考按鈕.png);
 }
 
-.personal #exam.active, .personal #exam:hover{
+.personal #exam:hover{
   background-image: url(./img/個人頁面_大考標籤.png);
 }
 
@@ -389,7 +395,7 @@
   background-image: url(./img/小考按鈕.png);
 }
 
-.personal #quiz.active, .personal #quiz:hover{
+.personal #quiz:hover{
   background-image: url(./img/個人頁面_小考標籤.png);
 }
 
@@ -397,7 +403,7 @@
   background-image: url(./img/作業按鈕.png);
 }
 
-.personal #homework.active, .personal #homework:hover{
+.personal #homework:hover{
   background-image: url(./img/個人頁面_作業標籤.png);
 }
 
@@ -405,7 +411,7 @@
   background-image: url(./img/其他按鈕.png);
 }
 
-.personal #other.active, .personal #other:hover{
+.personal #other:hover{
   background-image: url(./img/個人頁面_其他標籤.png);
 }
 
@@ -421,7 +427,7 @@
   font-family: "Source Han Sans SC Light", sans-serif;
 }
 
-.personal .confirm_dutton, .personal .edit_button{
+.personal .confirm_button, .personal .edit_button{
   height: 2.2vw;
   background-size: 100%;
   background-repeat: no-repeat;
@@ -430,11 +436,11 @@
   margin-left: 1vw;
 }
 
-.personal .confirm_dutton{
+.personal .confirm_button{
   background-image: url(./img/個人頁面_確認上傳按鈕.png);
 }
 
-.personal .confirm_dutton:hover{
+.personal .confirm_button:hover{
   background-image: url(./img/個人頁面_確認上傳按鈕_hover.png);
 }
 
@@ -472,12 +478,14 @@
 
 .personal .file_2{ 
   height: 11.4vw;
+  /* width: 14vw;  */
   display: flex; 
   justify-content: space-between; 
   margin: 0.4vw;
   padding: 0.8vw;
   background-color:rgba(211, 211, 213, 0.2); 
   border-radius: 0.8vw;
+  position: relative;
 } 
 
 .personal .file_info{ 
@@ -517,6 +525,29 @@
 .personal .file_pic img{ 
   width: 85%;
 } 
+
+.personal .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  border-radius: 0.8vw;
+
+}
+
+.personal .file_2:hover .overlay {
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.personal .overlay img{
+  width: 1.5vw;
+}
 
 ::-webkit-scrollbar{
   width:0;
