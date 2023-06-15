@@ -584,7 +584,23 @@ footer.sort {
 footer.sort{
     display: none;
 }
-
+#MRdirty {
+    background-image: url(./img/小恐龍.png);
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 6vw;
+    height: 6vw;
+    transform: translate(-15%, -10%);
+    transition: .3s ease-in-out;
+    z-index: 9999;
+    cursor: pointer;
+}
+#MRdirty:hover{
+    transform: scale(1.2) translate(-15%, -10%);
+}
 
 /* ////////////////////////////////////// */
 .modal{
