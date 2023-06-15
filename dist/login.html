@@ -1,378 +1,85 @@
-<title>personal</title>  
-<link href="personal.css" rel="stylesheet" type="text/css">  
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!DOCTYPE html>
+<html>
 
-<div class="personal">
-  <div id="null"></div>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel="shortcut icon" type="image/png" href="./img/1_分頁logo.png">
+  <title>NCKU EX</title>
+  <link href="login.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+</head>
 
-  <div class="parent_1">
-    <header>
-      <div class="header_2">
-        <div class="logo"><img src="./img/LOGO.png" style="width: 5vw;"></div> 
-        <div class="back_button"></div>
-      </div> 
-    </header>
-
-    <div class="parent_2">
-      <div class="sidebar"> 
-        <div class="profile" style="padding: 0 0.5vw;"> 
-          <div style="height: 1.6vw; width: 100%;"></div> 
-
-          <div class="pic"><img src="./img/userpic/小恐龍.png"></div> 
-          <div class="nickname"> 
-              <p>電機小恐龍 </p> 
-              <div class="fire"><img src="./img/fire.png"></div>
-          </div> 
-          <div class="edit"></div>
-          <div style="height: 2.3vw;"></div> 
-          <div class="info"> 
-            <div class="name"><img src="./img/個人資料_姓名heading.png"><p>謝宗宗</p></div>
-            <div style="width: 1.6vw;"></div>
-            <div class="dep"><img src="./img/個人資料_系級heading.png"><p>電機112</p></div> 
-          </div> 
-          <div style="height: 1.6vw;"></div> 
-          <div class="sum"> 
-            <div class="upload_num"><p>10</p></div>
-            <div style="width: 0.8vw;"></div>
-            <div class="like_num"><p>100</p></div> 
-          </div> 
+<body>
+  <main>
+    <div class="leftbox">
+      <div class="title">
+        <img class="logo" src="./img/大LOGO.png">
+        <div class="text1">
+          <p1>考古在手</p1>
+          <p1>學分無窮</p1>
         </div>
-
-        <footer>
-          <div class="wishlist">
-            <div style="height: 1vw;"></div>
-            <div class="text"> 
-              <p>我的願望清單</p> 
-              <div class="key"><img src="./img/key.png"></div>
-            </div> 
-            <div class="lock"><img src="./img/鎖.png"></div>
-          </div>
-          <div style="height: 1.5vw;"></div>
-          <div class="customer"></div>
-        </footer>
-      </div>
-
-      <div class="content">
-        <div style="height: 0.7vw;"></div> 
-
-        <div class="upload_container"></div>
-
-        <div class="upload_info">
-          <div class="upload_info_2">
-            <div style="height: 1.3vw;"></div>
-            <div class="upload_title"><p>我的上傳區</p></div>
-            <div style="height: 2vw;"></div>
-            <div class="row">
-              <p>學院</p>
-              <div id="college" class="filter">
-                <div class="header">
-                  <li>-請選擇-</li>
-                  <div class="triangle"></div>
-                </div>
-                <div class="content" style="width: 11.5vw;">
-                  <ul>
-                      <li>規劃設計學院</li>
-                      <li>工學院</li>
-                      <li>社會科學院</li>
-                      <li>醫學院</li>
-                      <li>管理學院</li>
-                      <li>文學院</li>
-                      <li>理學院</li>
-                      <li>電機資訊學院</li>
-                      <li>生物科學與科技學院</li>
-                      <li>敏求智慧運算學院</li>
-                      <li>跨院之學位學程</li>
-                      <li>通識課程</li>
-                  </ul>
-                </div>
-              </div>
-
-              <p>科系</p>
-              <div id="department" class="filter">
-                <div class="header">
-                  <li>-請選擇-</li>
-                  <div class="triangle"></div>
-                </div>
-                <div class="content" style="width: 8.5vw;">
-                  <ul>
-                      <li></li>
-                  </ul>
-                </div>
-              </div>
-
-              <p>年級</p>
-              <div id="grade" class="filter">
-                <div class="header">
-                  <li>-請選擇-</li>
-                  <div class="triangle"></div>
-                </div>
-                <div class="content" style="width: 8.5vw;">
-                  <ul>
-                      <li>大一</li>
-                      <li>大二</li>
-                      <li>大三</li>
-                      <li>大四</li>
-                      <li>研究所</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div style="height: 3.2vw;"></div>
-
-            <div class="row">
-              <p>課程</p>
-              <div id="lecture" class="filter">
-                <div class="header">
-                  <li>-請選擇-</li>
-                  <div class="triangle"></div>
-                </div>
-                <div class="content" style="width: 25.5vw;">
-                  <ul>
-                      <li></li>
-                  </ul>
-                </div>
-              </div>
-
-              <p>教師</p>
-              <div id="teacher" class="filter">
-                <div class="header">
-                  <li>-請選擇-</li>
-                  <div class="triangle"></div>
-                </div>
-                <div class="content" style="width: 8.5vw;">
-                  <ul>
-                      <li></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div style="height: 3.2vw;"></div>
-
-            <div class="row">
-              <p>學年</p>
-              <div id="year" class="filter">
-                <div class="header">
-                  <li>-請選擇-</li>
-                  <div class="triangle"></div>
-                </div>
-                <div class="content" style="width: 11vw;">
-                  <ul>
-                      <li>112-2</li>
-                      <li>112-1</li>
-                      <li>111-2</li>
-                      <li>111-1</li>
-                      <li>110-2</li>
-                      <li>110-1</li>
-                      <li>109-2</li>
-                      <li>109-1</li>
-                  </ul>
-                </div>
-              </div>
-
-              <p>類別</p>
-              <div id="clas" class="filter">
-                  <div class="choise" id="exam"></div>
-                  <div class="choise" id="quiz"></div>
-                  <div class="choise" id="homework"></div>
-                  <div class="choise" id="other"></div>
-              </div>
-            </div>
-
-            <div style="height: 2.5vw;"></div>
-
-            <div class="bottom">
-              <div class="file_name"><p>HW7_01.pdf</p></div>
-              <div class="confirm_button"></div>
-              <div class="edit_button"></div>
-            </div>
-          </div>
+        <div class="text2">
+          <p2>專屬成大的共享考古資源平台</p2>
         </div>
-
-        <div class="history"> 
-          <div style="height: 0.6vw;"></div>
-          
-          <div class="his_title"> 
-            <p>我的上傳歷史紀錄</p> 
-          </div> 
-
-          <div style="height: 0.6vw;"></div>
-
-          <div class="file_container"> 
-            <div class="file_row">
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_小考標籤.png"></div>
-                      
-                    <div class="file_detail">
-                      <p>有機生物學</p>
-                      <p>111-2</p>
-                      <p1>23/04/21</p1> 
-                    </div>                   
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_大考標籤.png"></div>
-                      
-                    <div class="file_detail">
-                      <p>生物學</p>
-                      <p>111-2</p>
-                      <p1>23/05/01</p1> 
-                    </div>
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_其他標籤.png"></div>
-                      
-                    <div class="file_detail">
-                      <p>有機生物學</p>
-                      <p>111-1</p>
-                      <p1>23/04/30</p1> 
-                    </div>
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_小考標籤.png"></div>
-                      
-                    <div class="file_detail">
-                      <p>電磁學</p>
-                      <p>111-2</p>
-                      <p1>23/04/29</p1> 
-                    </div>
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_作業標籤.png"></div>
-                      
-                    <div class="file_detail">
-                      <p>計算機網路</p>
-                      <p>111-2</p>
-                      <p1>23/04/01</p1> 
-                    </div>
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_小考標籤.png"></div>
-                      
-                    <div class="file_detail">
-                      <p>有機生物學</p>
-                      <p>111-1</p>
-                      <p1>23/03/30</p1> 
-                    </div>
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="file_1"> 
-                <div class="file_2">
-                  <div class="file_info"> 
-                    <div class="file_clas"><img src="./img/個人頁面_作業標籤.png"></div>
-                    <div class="file_detail">
-                      <p>工程圖學</p>
-                      <p>110-2</p>
-                      <p1>22/08/13</p1> 
-                    </div>
-                  </div> 
-                
-                  <div class="file_pic"> 
-                    <img src="./img/E_10_文件icon.png"> 
-                  </div>
-
-                  <div class="overlay"> 
-                    <div class="edit_file" style="cursor: pointer;"><img src="./img/F_2_文件編輯按鈕.png"></div>
-                    <div style="width: 3vw;"></div>
-                    <div class="trash" style="cursor: pointer;"><img src="./img/F_3_文件垃圾.png"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="aboutus">
+          <a href=""><img src="./img/Group174.png">
+            <p3>點擊</p3>
+            <p3>了解我們！</p3>
+          </a>
+        </div>
+        <div class="text3">
+          <p3>- 請使用橫的螢幕以免造成我們的困擾 -</p3>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<script src="./personal.js"></script>
+    <div class="rightbox">
+      <div class="acess">
+        <button id="login">
+          <img src="./img/7123953_logo_google_g_icon 2.png">
+          <p5>成大用戶</p5>
+        </button>
+        <button id="visitor">
+          <p5>訪客</p5>
+        </button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p4>© 2023 NCKU EX. All rights reserved. Last Updated on Jun 16, 2023</p4>
+  </footer>
+  <div class="modal">
+    <div class="welcome">
+      <div class="header">
+        <p5>歡迎加入NCKU EX！</p5>
+        <img src="./img/Group180.png" id="quit">
+      </div>
+      <div class="content">
+
+        <div>
+          <label for="imageInput">
+            <img src="./img/userpic/小恐龍.png" id="userpic">
+          </label>
+          <input type="file" id="imageInput" style="display: none;">
+          <img src="./img/Group.png">
+
+          <img id="imagePreview" src="" style="opacity: 0;" />
+          <button id="confirmButton" style="display: none;">確定</button>
+
+        </div>
+
+
+        <input type="text" id="username" placeholder="請輸入你的暱稱">
+        <img src="./img/Group122.png" id="done">
+      </div>
+    </div>
+  </div>
+  <script src="./js/login.js"></script>
+  <script src="./js/profile.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+</body>
+
+</html>

@@ -258,12 +258,7 @@ $(document).on('click', '.view #quit', function() {
 });
 let quitView = false;
 
-$(document).on('click', '.view #userpic img', function() {
-  showModal('personal', 'id', '');
-});
-
-
-$(document).on('click', '.personal #null', function() {
+$(document).on('click', '.personal #null, .personal .back_button', function() {
   closeModal();
 });
 
@@ -293,6 +288,7 @@ function closeModal() {
 function Page(page, id, up) {
   if (page == 'view') {viewPage(id, up);}
   if (page == 'personal') {personalPage(id);}
+  if (page == 'others') {othersPage(id);}
 }
 
 function viewPage(doc, up){
@@ -306,6 +302,7 @@ function viewPage(doc, up){
     }, (data) => {
       $('#' + doc + '.view').find('#userpic img').attr('src', data[1]);
       $('#' + doc + '.view').find('#up').text(data[0])
+      $('#' + doc + '.view').find('#upload').find('div').eq(2).attr('id', up)
     })
     active_like(data[1])
     active_rate(data[2])
@@ -324,24 +321,23 @@ function personalPage(userid) {
 }
 
 /* ////////////////////////////////////// */
-//滾軸
 
-function viewScroll(){
-  let fixed = false
-  $('.view').on('scroll', function() {
-    var scroll = $(this).scrollTop();
-    var offset = $('.view #right').offset().top;
-    if (scroll > offset) {
-      if (!fixed){
-        fixed = true;
-        $('.view #right').addClass('fixed');
-      }
-    } else {
-      fixed = false;
-      $('.view #right').removeClass('fixed');
-    }
+$(document).on('click', '.view #userpic img', function() {
+  let upid = $('.view').find('#upload').find('div').eq(2).attr('id')
+  showModal('others', upid, '');
+});
+
+function othersPage(userid) {
+  $.get('/others', {
+    userID: userid,
+  }, (data) => {
+    $('#' + userid + '.others').html(data);
   });
 }
+
+$(document).on('click', '.others #null, .others .back_button', function() {
+  closeModal();
+});
 
 /* ////////////////////////////////////// */
 //倒讚幫
@@ -521,6 +517,26 @@ async function renderPDF(url, doc) {
     $('#' + doc + '.view #fail').css('display', 'flex');
   }
   $('#' + doc + '.view').css('cursor', '');
+}
+
+/* ////////////////////////////////////// */
+//滾軸
+
+function viewScroll(){
+  let fixed = false
+  $('.view').on('scroll', function() {
+    var scroll = $(this).scrollTop();
+    var offset = $('.view #right').offset().top;
+    if (scroll > offset) {
+      if (!fixed){
+        fixed = true;
+        $('.view #right').addClass('fixed');
+      }
+    } else {
+      fixed = false;
+      $('.view #right').removeClass('fixed');
+    }
+  });
 }
 
 /* ////////////////////////////////////// */

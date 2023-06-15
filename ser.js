@@ -223,6 +223,13 @@ app.get('/personal', (req, res) => {
   })
 });
 
+app.get('/others', (req, res) => {
+  fs.readFile('./dist/others.html', 'utf8', function (err, html) {
+    if (err) throw err;
+    res.send(html);
+  })
+});
+
 app.get('/loading', (req, res) => {
   fs.readFile('./dist/html/loading.html', 'utf8', function (err, html) {
     if (err) throw err;
