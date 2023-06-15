@@ -105,11 +105,25 @@ input:focus {
   
 
 /* ////////////////////////////////////// */
-.sort #text, .sort #login{
+.sort #text, .sort #login, .sort #wish_duttonn{
     display: flex;
     justify-content: center;
     width: 54%;
 }
+
+.sort #wish_dutton{
+    width: 25%;
+    height: 1.7vw;
+    background-image: url(./img/願望清單按鈕.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.sort #wish_dutton:hover{
+    background-image: url(./img/願望清單按鈕_hover.png);
+}
+
 .sort #user{
     width: auto;
     display: flex;
@@ -306,6 +320,60 @@ aside.sort.active{
 .sort .content.active{
     display: block;
     z-index: 10;
+}
+
+.sort #clas{
+    border: 0;
+}
+
+.sort #clas .row{
+    display: flex;
+    align-items: center;
+    align-content: space-around;
+    margin-left: 0.8vw;
+}
+
+.sort .choise{
+    display: flex;
+    align-items: center;
+    margin-right: 1vw;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    width: 7vw;
+    height: 2.5vw;
+}
+
+.sort #exam{
+background-image: url(./img/大考按鈕.png);
+}
+
+.sort #exam:hover{
+background-image: url(./img/個人頁面_大考標籤.png);
+}
+
+.sort #quiz{
+background-image: url(./img/小考按鈕.png);
+}
+
+.sort #quiz:hover{
+background-image: url(./img/個人頁面_小考標籤.png);
+}
+
+.sort #homework{
+background-image: url(./img/作業按鈕.png);
+}
+
+.sort #homework:hover{
+background-image: url(./img/個人頁面_作業標籤.png);
+}
+
+.sort #other{
+background-image: url(./img/其他按鈕.png);
+}
+
+.sort #other:hover{
+background-image: url(./img/個人頁面_其他標籤.png);
 }
 
 /* ////////////////////////////////////// */
