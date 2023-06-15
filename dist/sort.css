@@ -350,7 +350,8 @@ aside.sort.active{
 background-image: url(./img/大考按鈕.svg);
 }
 
-.sort #exam:hover{
+.sort #exam:hover
+, .sort #exam.active{
 background-image: url(./img/個人頁面_大考標籤.png);
 }
 
@@ -358,7 +359,8 @@ background-image: url(./img/個人頁面_大考標籤.png);
 background-image: url(./img/小考按鈕.svg);
 }
 
-.sort #quiz:hover{
+.sort #quiz:hover
+, .sort #quiz.active{
 background-image: url(./img/個人頁面_小考標籤.png);
 }
 
@@ -366,7 +368,8 @@ background-image: url(./img/個人頁面_小考標籤.png);
 background-image: url(./img/作業按鈕.svg);
 }
 
-.sort #homework:hover{
+.sort #homework:hover
+, .sort #homework.active{
 background-image: url(./img/個人頁面_作業標籤.png);
 }
 
@@ -374,7 +377,8 @@ background-image: url(./img/個人頁面_作業標籤.png);
 background-image: url(./img/其他按鈕.svg);
 }
 
-.sort #other:hover{
+.sort #other:hover
+, .sort #other.active{
 background-image: url(./img/個人頁面_其他標籤.png);
 }
 
@@ -614,6 +618,8 @@ footer.sort{
     opacity: 0;
     transition: .5s ease-in-out;
 }
+
+
 
 /* ////////////////////////////////////// */
 @media screen and (max-aspect-ratio: 16/9){
