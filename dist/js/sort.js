@@ -92,7 +92,6 @@ $(document).ready(function () {
     $('#lecture .content ul').html('<li></li>');
     $('#documentcontainer').empty().css('display', 'none');
     $('.bot').css('opacity', '.25');
-    documentInitial()
   }
 
   /* ////////////////////////////////////// */
@@ -276,6 +275,8 @@ $(document).ready(function () {
   $('.userpic').click(function () {
     showModal('personal', userID, '');
   });
+
+
 
   /* ////////////////////////////////////// */
   //預覽視窗
