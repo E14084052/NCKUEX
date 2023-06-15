@@ -366,30 +366,26 @@ $(document).ready(function () {
   }
 
   $(document).on('click', '.personal .edit', function () {
-    console.log('556515')
     let infochange = $('<div>').addClass('infochange');
     $('body').append(infochange);
     $.get('/infochange', {
     }, (data) => {
       $('.infochange').html(data);
     });
-    $('.infochange').css('display', 'flex').css('opacity', '1');
-  })
-
-  $(document).on('click', '.personal .infochange #done', function () {
-    $.get('/UserInfoChange', {
-      // userpic: $('#userpic').attr('src'),
-      username: $('#username').val(),
-      userID: userID
-    }, (data) => {
-    });
-  })
-
-  $(document).on('click', '.personal .infochange #quit', function () {
-    $('.modal').css('display', 'none').css('opacity', '0');
-    $.get('/logout', {
-    }, (data) => {
-    });
+    $('.infochange').css('display', 'flex');
+    setTimeout(function () {
+      $('.infochange').css('opacity', '1');
+      $('.infochange #done').click(function () {
+        $.get('/UserInfoChange', {
+          username: $('#username').val(),
+          userID: userID
+        }, (data) => {
+        });
+      })
+      $('.infochange #quit').click(function () {
+        $('.infochange').css('display', 'none').css('opacity', '0');
+      })
+    }, 500)
   })
 
   /* ////////////////////////////////////// */
