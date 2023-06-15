@@ -187,6 +187,17 @@ $('#search-box').on('blur', function() {
 /* ////////////////////////////////////// */
 /* ------------------------------------------------------------------------------------------------------------------------- */
   //真登入
+    fetch('/UserInfo_pic')
+      .then(response => response.text())
+      .then(data => {
+        console.log("UserInfo_pic", data);
+        $('#user .userpic img').attr('src', data);
+      })
+      .catch(error => {
+        // 處理錯誤
+        console.error(error);
+      });
+  
   fetch('/UserInfo')
   .then(response => response.json())
   .then(data => {
@@ -205,7 +216,6 @@ $('#search-box').on('blur', function() {
   });
 
   $('#login').click(function () {
-    if($('#login p').text()=='登 出'){
       fetch('/logout', { method: 'GET' })
         .then(() => {
           window.location.href = '/login.html';  // 執行前端重定向
@@ -214,14 +224,20 @@ $('#search-box').on('blur', function() {
           // 處理錯誤
           console.error(error);
         });
-    }
-    else{window.location.href = '/login.html';}
   });
 
   $('.userpic').click(function () {
-    if ($('#text').hasClass('active')) {
-      showModal('personal', '');
+      console.log("點擊個人頭像");
+      let userID;
+      $.get('/UserInfo', {
+      }, (data) => {
+        if (data) {
+          userID = data.family_name;
     }
+      })
+      
+      showModal('personal', 'id');
+      
   });
 
 /* ////////////////////////////////////// */
@@ -287,9 +303,10 @@ function viewPage(doc){
   });
 }
 
-function personalPage(userid){
-  $.get('/personal' , {
-    userID: 'id',
+function personalPage(userid) {
+  // 這裡的ID為當前帳號的user學號
+  $.get('/personal', {
+    userID: userid,
   }, (data) => {
     $('#' + userid + '.personal').html(data);
   });

@@ -15,7 +15,7 @@ const __dirname = dirname(__filename)
 
 // 建立一個 express (也就是網頁伺服器)實體
 const app = express()
-const port = 8888
+const port = 6412
 // 啟動伺服器
 app.listen(port, () => {
   console.log(`listening on port: ${port}`)
@@ -107,8 +107,8 @@ async function htmlWriter(data, id) {
   $('.year h4').text(data.year);
   $('.teacher h4').text(data.teac);
   $('.like h4').text(data.like.count);
-  $('.name h4:eq(0)').text(data.clas);
-  $('.name h4:eq(1)').text(data.name);
+  $('.name img').attr('src', './img/個人頁面_' + data.clas + '標籤.png');
+  $('.name h4').text(data.name);
   $('.tag img:eq(0)').attr('style', 'display: ' + (data.tagA.score > 3.5 ? 'block' : 'none'));
   $('.tag img:eq(1)').attr('style', 'display: ' + (data.tagB.score > 3.5 ? 'block' : 'none'));
   let user;
@@ -294,7 +294,7 @@ function auth(req, res, next) {
 //parameter
 const client_id = '770897758084-pmf9c33inv3pt39eo65fvapl6971v0lu.apps.googleusercontent.com'
 const client_secret = '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'
-const root = 'http://localhost:8888'
+const root = 'http://localhost:6412'
 const redirect_url = root + '/auth/google/callback'
 
 //google登入連結

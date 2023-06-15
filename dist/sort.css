@@ -466,10 +466,15 @@ aside.sort.active{
     justify-content: flex-start;
 }
 .sort .name{
-    margin-left: 4%;
+    margin-left: 2%;
+    width: 20%;
 }
 .sort .name p{
     margin: 0 .4vw;
+}
+.sort .name img{
+    width: 40%;
+    margin-top: .1vw;
 }
 .sort .name > h4, .sort .uploader > h4{
     max-width: 100%;
@@ -477,8 +482,8 @@ aside.sort.active{
     text-overflow: ellipsis;
 }
 .sort .tag{
-    width: 8%;
-    margin-right: 6%;
+    width: 6%;
+    margin-right: 8%;
 }
 .sort .tag img{
     width: 1.2vw;
@@ -487,10 +492,10 @@ aside.sort.active{
     padding: .2vw;
 }
 .sort .uploader{
-    width: 20%;
+    width: 16%;
 }
 .sort .uploader h4{
-    width: 30%;
+    width: auto;
     margin-right: 1.5vw;
 }
 .sort .uploader img{

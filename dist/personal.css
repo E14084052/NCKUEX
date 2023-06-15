@@ -239,10 +239,11 @@
 }
 
 .personal .upload_container{
-  display: none;
+    /* display: none; */
 }
 
 .personal .upload_info{
+  display: none;
   background-image: url(./img/上傳區外框.png);
   background-size: 100%;
   background-repeat: no-repeat;
