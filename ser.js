@@ -15,7 +15,7 @@ const __dirname = dirname(__filename)
 
 // 建立一個 express (也就是網頁伺服器)實體
 const app = express()
-const port = 6412
+const port = 8888
 // 啟動伺服器
 app.listen(port, () => {
   console.log(`listening on port: ${port}`)
@@ -203,6 +203,13 @@ app.get('/personal', (req, res) => {
   })
 });
 
+app.get('/loading', (req, res) => {
+  fs.readFile('./dist/html/loading.html', 'utf8', function (err, html) {
+    if (err) throw err;
+    res.send(html);
+  })
+});
+
 /* ////////////////////////////////////// */
 
 app.get('/like', (req, res) => {
@@ -294,7 +301,7 @@ function auth(req, res, next) {
 //parameter
 const client_id = '770897758084-pmf9c33inv3pt39eo65fvapl6971v0lu.apps.googleusercontent.com'
 const client_secret = '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'
-const root = 'http://localhost:6412'
+const root = 'http://localhost:8888'
 const redirect_url = root + '/auth/google/callback'
 
 //google登入連結

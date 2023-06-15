@@ -6,19 +6,22 @@ $(document).ready(function () {
 })
 
 function login() {
-        window.location.href = 'http://localhost:6412/auth/google';
+        window.location.href = 'http://localhost:8888/auth/google';
 }
 
 
     fetch('/NickName')
         .then(response => response.text())
         .then(data => {
+            loading()
             console.log("data =", data);
-            if (data == "Edit nickname")
-        $('.modal').css('display', 'flex').css('opacity', '1');
+            if (data == "Edit nickname"){
+            $('.modal').css('display', 'flex').css('opacity', '1');
+            $('.loading').css('display', 'none');
+    }
             else { 
                 console.log("跳轉");
-                window.location.href = 'http://localhost:6412/sort.html'; 
+                window.location.href = 'http://localhost:8888/sort.html'; 
     }
 })
         .catch(error => {
@@ -34,6 +37,14 @@ function login() {
         }
     })
 
+    function loading(){
+        let loading = $('<div>').addClass('loading');
+        $('body').append(loading);
+        $.get('/loading', {
+        }, (data) => {
+            $('.loading').html(data);
+        });
+    }
 /* ////////////////////////////////////// */
 
     $('#done').click(function () {
@@ -42,7 +53,7 @@ function login() {
         username: $('#username').val(),
         userID: userID
         }, (data) => {
-            window.location.href = 'http://localhost:6412/sort.html'
+            window.location.href = 'http://localhost:8888/sort.html'
     });
 })
 
@@ -56,7 +67,7 @@ function login() {
 })
 
     $('#visitor').click(function () {
-        window.location.href = 'http://localhost:6412/sort.html'
+        window.location.href = 'http://localhost:8888/sort.html'
 })
 
 /* ////////////////////////////////////// */
