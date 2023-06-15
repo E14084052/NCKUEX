@@ -85,7 +85,7 @@ $(document).ready(function () {
     /* ////////////////////////////////////// */
 
     $('#quit').click(function () {
-        $('.modal').css('display', 'none').css('opacity', '0');
+        $('.infochage').css('display', 'none').css('opacity', '0');
         $.get('/logout', {
         }, (data) => {
         });

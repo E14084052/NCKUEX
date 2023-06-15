@@ -377,7 +377,7 @@ $(document).ready(function () {
       $('.infochange').css('opacity', '1');
       $('.infochange #done').click(function () {
         $.get('/UserInfoChange', {
-          username: $('#username').val(),
+          username: $('.infochange #username').val(),
           userID: userID
         }, (data) => {
         });
