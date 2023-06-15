@@ -95,6 +95,7 @@
     width: 2vw;
     margin:0 1vw;
     border-radius: 50%;
+    cursor: pointer;
 } 
 
 .view img{
