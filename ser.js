@@ -250,6 +250,31 @@ app.get('/others', (req, res) => {
   })
 });
 
+app.get('/othersdoc', (req, res) => {
+  fs.readFile('./document.json', 'utf8', function (err, data) {
+    if (err) throw err;
+    data = JSON.parse(data);
+    let HTML = '';
+    for (let id in data) {
+      if (data[id].upid == req.query.userID){
+        HTML += psdochtmlwrite(data[id]);
+      }
+    }
+    res.send(HTML);
+  });
+});
+
+function psdochtmlwrite(data, id) {
+  console.log(data);
+  const html = fs.readFileSync('./dist/html/persondoc.html', 'utf8');
+  const $ = cheerio.load(html);
+  $('.file_1').attr('id', id);
+  $('file_clas img').attr('src', './img/個人頁面_' + data.clas +'標籤.png');
+  $('file_detail p').eq(0).text(data.lec);
+  $('file_detail p').eq(0).text(data.year);
+  return $.html()
+}
+
 /* ////////////////////////////////////// */
 
 app.get('/like', (req, res) => {

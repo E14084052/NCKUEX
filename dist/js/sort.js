@@ -332,17 +332,25 @@ $(document).ready(function () {
     showModal('others', upid, '');
   });
 
+  $(document).on('click', '.others #null, .others .back_button', function () {
+    closeModal();
+  });
+
   function othersPage(userid) {
     $.get('/others', {
       userID: userid,
     }, (data) => {
       $('#' + userid + '.others').html(data);
     });
+    setTimeout(function () {
+      $.get('/othersdoc', {
+        userID: userid,
+      }, (data) => {
+        console.log(data);
+        $('#' + userid + '.others').find('.file_row').html(data);
+      });
+    }, 100);
   }
-
-  $(document).on('click', '.others #null, .others .back_button', function () {
-    closeModal();
-  });
 
   /* ////////////////////////////////////// */
   //倒讚幫
