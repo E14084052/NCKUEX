@@ -171,5 +171,6 @@ fetch('/UserInfo_JSON')
         $('.nickname p').text(data.name);
         $('.name p').text(chineseName);
         $('.dep p').text(data.dep_year);
+        $('.fire').css('display', (data.award === 1 ? 'block' : 'none'))
 
     })
