@@ -16,8 +16,15 @@ $(document).ready(function () {
             console.log("data =", data);
             processData(data)
                 .then(() => {
-                    if (data == "Edit nickname")
-                        $('.modal').css('display', 'flex').css('opacity', '1');
+                    if (data == "Edit nickname"){
+                        let infochange = $('<div>').addClass('infochange');
+                        $('body').append(infochange);
+                        $.get('/infochange', {
+                          }, (data) => {
+                            $('.infochange').html(data);
+                          });
+                        $('.infochange').css('display', 'flex').css('opacity', '1');
+                    }
                     else {
                         window.location.href = 'http://localhost:8888/sort.html';
                     }

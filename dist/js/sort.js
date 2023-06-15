@@ -297,7 +297,6 @@ $(document).ready(function () {
   });
 
   function showModal(page, id, up) {
-    console.log(id);
     $('html').css('cursor', 'wait');
     let modal = $('<div>').attr('id', id).addClass('modal').addClass(page);
     $('body').append(modal);
@@ -365,6 +364,17 @@ $(document).ready(function () {
     }, 100);
   }
 
+  $(document).on('click', '.personal .edit', function() {
+    console.log('556515')
+    let infochange = $('<div>').addClass('infochange');
+    $('body').append(infochange);
+    $.get('/infochange', {
+    }, (data) => {
+        $('.infochange').html(data);
+    });
+    $('.infochange').css('display', 'flex').css('opacity', '1');
+})
+
   /* ////////////////////////////////////// */
 
   $(document).on('click', '.view #userpic img', function () {
@@ -431,8 +441,7 @@ $(document).ready(function () {
       setTimeout(function () {
         console.log(data);
         $('#documentcontainer').empty();
-        documentSelect();
-        documentSearch();
+        documentInitial();
         $('html').css('cursor', '');
         active_like(!iff);
       }, 100);
@@ -524,8 +533,7 @@ $(document).ready(function () {
         setTimeout(function () {
           console.log(data);
           $('#documentcontainer').empty();
-          documentSelect();
-          documentSearch();
+          documentInitial();
           $('html').css('cursor', '');
           active_rate(!iff);
         }, 100);

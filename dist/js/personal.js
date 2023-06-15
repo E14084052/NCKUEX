@@ -157,5 +157,4 @@ $('.confirm_button').on('click', function () {
             // 處理錯誤的邏輯
             console.error(error);
         });
-
 })
