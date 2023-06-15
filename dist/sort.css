@@ -479,12 +479,12 @@ background-image: url(./img/個人頁面_其他標籤.png);
     border-left: 0;
     border-right: 0;
 }
-.sort #right .triangle{
+.sort #right .triangle.reverse{
     margin: 0 .4vw;
     border-top: .3vw solid #81D6FA;
     border-bottom: 0;
 }
-.sort #right .triangle.reverse{
+.sort #right .triangle{
     margin: 0 .4vw;
     border-bottom: .3vw solid #81D6FA;
     border-top: 0;

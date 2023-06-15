@@ -10,15 +10,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686421922189": {
@@ -31,16 +31,16 @@
         "clas": "undefined",
         "upid": "E14084078",
         "like": {
-            "count": 0,
-            "user": []
+            "count": 100,
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686754863162": {
@@ -54,15 +54,15 @@
         "upid": "E14082181",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686829884086": {
@@ -76,15 +76,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686830137315": {
@@ -98,15 +98,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686832249052": {
@@ -120,15 +120,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686835929259": {
@@ -142,15 +142,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686835978939": {
@@ -164,15 +164,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686836038463": {
@@ -186,15 +186,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686836054276": {
@@ -208,15 +208,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686836201463": {
@@ -230,15 +230,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686836236669": {
@@ -252,15 +252,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686836288507": {
@@ -274,15 +274,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686836381938": {
@@ -296,15 +296,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     },
     "1686839119681": {
@@ -318,15 +318,15 @@
         "upid": "E14084078",
         "like": {
             "count": 0,
-            "user": []
+            "user": ""
         },
         "tagA": {
             "score": 0,
-            "user": {}
+            "user": ""
         },
         "tagB": {
             "score": 0,
-            "user": {}
+            "user": ""
         }
     }
 }

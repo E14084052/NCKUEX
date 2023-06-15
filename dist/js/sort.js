@@ -91,6 +91,7 @@ $(document).ready(function () {
     $('#lecture .content ul').html('<li></li>');
     $('#documentcontainer').empty().css('display', 'none');
     $('.bot').css('opacity', '.25');
+    documentInitial()
   }
 
   /* ////////////////////////////////////// */
@@ -119,15 +120,19 @@ $(document).ready(function () {
 
   $('#year h4').click(function () {
     if ($('#documentcontainer').css('display') == 'block') {
-      $('#like .triangle').addClass('inactive').removeClass('reverse');
+      $('#like .triangle').addClass('inactive');
+      if($('#like .triangle').hasClass('reverse')){
+        $('#like .triangle').removeClass('reverse')
+        likeOrder = 1;
+      }
       $('#year .triangle').removeClass('inactive').toggleClass('reverse');
       yearOrder = yearOrder == 1 ? 0 : 1;
       let documents = $('.document');
       documents.sort((a, b) => {
         let A = $(a).find('.year h4').text();
         let B = $(b).find('.year h4').text();
-        if (yearOrder == 0) { if (A > B) { return 1 } else { return -1 } }
-        if (yearOrder == 1) { if (A < B) { return 1 } else { return -1 } }
+        if (yearOrder == 1) { if (A > B) { return 1 } else { return -1 } }
+        if (yearOrder == 0) { if (A < B) { return 1 } else { return -1 } }
       });
       $('#documentcontainer').append(documents);
     }
@@ -135,25 +140,46 @@ $(document).ready(function () {
 
   $('#like h4').click(function () {
     if ($('#documentcontainer').css('display') == 'block') {
-      $('#year .triangle').addClass('inactive').removeClass('reverse');
-      $('#like .triangle').removeClass('inactive').toggleClass('reverse');
-      likeOrder = likeOrder == 1 ? 0 : 1;
-      let documents = $('.document');
-      documents.sort((a, b) => {
-        let A = parseInt($(a).find('.like h4').text());
-        let B = parseInt($(b).find('.like h4').text());
-        if (likeOrder == 0) { return A - B }
-        if (likeOrder == 1) { return B - A }
-      });
-      $('#documentcontainer').append(documents);
+      likesort()
     }
   });
+
+  function likesort() {
+    $('#year .triangle').addClass('inactive');
+    if($('#year .triangle').hasClass('reverse')){
+      $('#year .triangle').removeClass('reverse')
+      yearOrder = 1;
+    }
+    $('#like .triangle').removeClass('inactive').toggleClass('reverse');
+    likeOrder = likeOrder == 1 ? 0 : 1;
+    let documents = $('.document');
+    documents.sort((a, b) => {
+      let A = parseInt($(a).find('.like h4').text());
+      let B = parseInt($(b).find('.like h4').text());
+      if (likeOrder == 1) { return A - B }
+      if (likeOrder == 0) { return B - A }
+    });
+    $('#documentcontainer').append(documents);
+  }
+
+  function sortInitial(){
+    $('#year .triangle, #like .triangle').addClass('inactive')
+    if($('#year .triangle').hasClass('reverse')){
+      $('#year .triangle').removeClass('reverse')
+      yearOrder = 1;
+    }
+    if($('#like .triangle').hasClass('reverse')){
+      $('#like .triangle').removeClass('reverse')
+      likeOrder = 1;
+    }
+  }
 
   /* ////////////////////////////////////// */
   //檔案生成
 
   function documentSelect() {
     if (lectureTarget != undefined && clasTarget != undefined) {
+      sortInitial()
       $('#documentcontainer').css('display', 'block');
       $('.bot').css('opacity', '1');
       $.get('/documentSelect', {
@@ -167,6 +193,7 @@ $(document).ready(function () {
 
   function documentSearch() {
     if ($('#search-box').val() != '') {
+      sortInitial()
       $('#documentcontainer').css('display', 'block');
       $('.bot').css('opacity', '1');
       $.get('/documentSearch', {
@@ -176,6 +203,18 @@ $(document).ready(function () {
       });
     }
   }
+
+  function documentInitial() {
+    $('#documentcontainer').css('display', 'block');
+    $('.bot').css('opacity', '1');
+    $.get('/documentSearch', {
+      search: 'd'
+    }, (data) => {
+      $('#documentcontainer').html(data);
+    });
+    setTimeout(function () { likesort() }, 100);
+  }
+  documentInitial()
 
   /* ////////////////////////////////////// */
   //搜索功能
