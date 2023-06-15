@@ -58,7 +58,6 @@ $(document).ready(function () {
     });
 
     $('#year .content').on('click', 'li', function (event) {
-        console.log("choose year...");
         yearTarget = event.target.innerText;
         $('#year .header li').text(yearTarget);
     });
@@ -107,7 +106,7 @@ $(document).ready(function () {
 
 // 抓取使用者選取的檔案資訊
 $('.confirm_button').on('click', function () {
-    const selectElements = document.querySelectorAll('.personal.header li');
+    const selectElements = document.querySelectorAll('.personal .header li');
     const doc_info = [];
     var flag = false;
     // 迭代選取到的 <li> 元素，擷取並存儲內容

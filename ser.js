@@ -61,11 +61,11 @@ app.get('/documentSelect', (req, res) => {
       .then(htmls => {
         let HTML = htmls.join('');
 
-        if (HTML == '') {
-          HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
-        }
+    if (HTML == '') {
+      HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
+    }
 
-        res.send(HTML);
+    res.send(HTML);
       })
       .catch(error => {
         console.error(error);
@@ -96,11 +96,11 @@ app.get('/documentSearch', (req, res) => {
       .then(htmls => {
         let HTML = htmls.join('');
 
-        if (HTML == '') {
-          HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
-        }
+    if (HTML == '') {
+      HTML = '<h1>太糟了！這裡沒有任何死人骨頭<h1>';
+    }
 
-        res.send(HTML);
+    res.send(HTML);
       })
       .catch(error => {
         console.error(error);
@@ -272,7 +272,7 @@ app.get('/like', (req, res) => {
       data[req.query.doc].like.count = data[req.query.doc].like.user.length;
       fs.writeFile('./document.json', JSON.stringify(data), 'utf8', function (err) {
         if (err) throw err;
-        res.send('按讚成功')
+      res.send('按讚成功')
       });
     }
   });
@@ -520,7 +520,7 @@ function Dep_Year(studentID) {
   return dep + year.toString();
 }
 
-/*------------------File Upload Test Block------------------*/
+/*------------------File Upload------------------*/
 import multer from "multer";
 import path from "path";
 // 設定上傳檔案的儲存位置和檔名
@@ -539,6 +539,7 @@ const upload = multer({ storage: storage });
 // 處理檔案上傳和資訊輸入的請求
 app.post('/upload', upload.single('file'), (req, res) => {
   // 取得使用者輸入的檔案資訊
+  console.log("hi",req.body);
   let doc_info = req.body.doc_info.split(',');
   const [col, dep, grade, lec, teac, year, clas] = doc_info;
   const file = req.file, filename = file.originalname;
@@ -554,6 +555,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 app.get('/upload2JSON', (req, res) => {
   const { col, dep, grade, lec, teac, year, clas, filename, label } = req.query;
+  console.log(req.query)
   const data = {
     [label]: {
       name: filename,
@@ -663,7 +665,7 @@ app.get('/NickName', (req, res) => {
     data = JSON.parse(data);
     try {
       const studentID = req.session.user.family_name;
-      if (data[studentID].loginCnt) // 要改回==1
+      if (data[studentID].loginCnt==1)
         res.send("Edit nickname");
       else
         res.send("Login");
