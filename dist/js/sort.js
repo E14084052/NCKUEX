@@ -73,8 +73,9 @@ $(document).ready(function () {
     documentSelect();
   });
 
-  $('#clas').on('click', 'div', function (event) {
-    $(this).addClass('active').siblings().removeClass('active');
+  $('#clas').on('click', '.choise', function (event) {
+    $('#clas').find('.choise').not(this).removeClass('active');
+    $(this).addClass('active')
     if ($(this).attr('id') == 'exam') { clasTarget = '大考' }
     if ($(this).attr('id') == 'quiz') { clasTarget = '小考' }
     if ($(this).attr('id') == 'homework') { clasTarget = '作業' }
