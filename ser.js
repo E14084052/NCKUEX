@@ -2,7 +2,7 @@
 import express from 'express'
 // const express = require('express')
 
-import { dirname } from 'path'
+import { dirname, extname } from 'path'
 import { fileURLToPath } from 'url'
 
 // google 登入用
@@ -196,8 +196,6 @@ app.get('/view', (req, res) => {
       $('#teac').text('教師 | ' + data[req.query.doc].teac);
       $('#year').text('年份 | ' + data[req.query.doc].year);
       $('#clas').text('類別 | ' + data[req.query.doc].clas);
-      //$('#userpic img').attr('src', './img/userpic/' + data[req.query.doc].pic);
-      //$('#up').text(req.query.uploader);
       $('#download a').attr('href', './upload/' + data[req.query.doc].url);
       let like = data[req.query.doc].like.user.includes(req.query.userID);
       let rate = false;
@@ -208,6 +206,15 @@ app.get('/view', (req, res) => {
     });
   })
 });
+
+app.get('/viewUploader', (req, res) => {
+  fs.readFile('./user.json', 'utf8', function (err, user) {
+    if (err) throw err;
+    user = JSON.parse(user);
+    res.send([user[req.query.upid].name, user[req.query.upid].picture, user[req.query.upid].award]);
+  });
+});
+
 
 app.get('/personal', (req, res) => {
   fs.readFile('./dist/personal.html', 'utf8', function (err, html) {
@@ -606,13 +613,10 @@ app.get('/UserInfoChange', (req, res) => {
   fs.readFile('user.json', 'utf8', (err, data) => {
     if (err) throw err;
     data = JSON.parse(data);
-    for (let i in data) {
-      if (data[i].id == req.query.userID) {
-        data[i].name = req.query.username;
-        data[i].picture = req.query.userpic;
-        data[i].sign = "true";
-      }
-    }
+
+    data[req.session.user.family_name].name = req.query.username;
+    // data[req.session.user.family_name].picture = req.query.userpic;
+
     fs.writeFile('./user.json', JSON.stringify(data), 'utf8', function (err) {
       if (err) throw err;
     });
@@ -639,7 +643,7 @@ app.get('/NickName', (req, res) => {
     data = JSON.parse(data);
     try {
       const studentID = req.session.user.family_name;
-      if (data[studentID].loginCnt == 1)
+      if (data[studentID].loginCnt) // 要改回==1
         res.send("Edit nickname");
       else
         res.send("Login");
@@ -648,4 +652,36 @@ app.get('/NickName', (req, res) => {
 
 
   })
+});
+
+
+/* Personal */
+const storage_userpic = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'dist/img/userpic');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+// 創建 multer 中間件
+const upload_pic = multer({ storage: storage_userpic });
+// 定義上傳圖片的路由處理
+app.post('/upload_userpic', upload_pic.single('file'), (req, res) => {
+  // 取得使用者輸入的檔案資訊
+  const file = req.file
+
+  fs.readFile('user.json', 'utf8', (err, data) => {
+    if (err) throw err;
+    data = JSON.parse(data);
+    data[req.session.user.family_name].picture = file.path.substring(5);
+
+    fs.writeFile('./user.json', JSON.stringify(data), 'utf8', function (err) {
+      if (err) throw err;
+    });
+  });
+
+
+
 });

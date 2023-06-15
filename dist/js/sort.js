@@ -73,9 +73,12 @@ $('#lecture .content').on('click', 'li', function(event) {
   documentSelect();
 });
 
-$('#clas .content').on('click', 'li', function(event) {
-  clasTarget = event.target.innerText;
-  $('#clas .header li').text(clasTarget);
+$('#clas').on('click', 'div', function(event) {
+  $(this).addClass('active').siblings().removeClass('active');
+  if($(this).attr('id') == 'exam'){clasTarget = '大考'}
+  if($(this).attr('id') == 'quiz'){clasTarget = '小考'}
+  if($(this).attr('id') == 'homework'){clasTarget = '作業'}
+  if($(this).attr('id') == 'other'){clasTarget = '其他'}
   documentSelect();
 });
 
@@ -244,8 +247,7 @@ $('#search-box').on('blur', function() {
 //預覽視窗
 
 $(document).on('click', '.document', function() {
-  showModal('view', $(this).attr('id'));
-  console.log($(this).find('.uploader h4').attr('id'));
+  showModal('view', $(this).attr('id'), $(this).find('.uploader h4').attr('id'));
 });
 
 $(document).on('click', '.view #quit', function() {
@@ -257,7 +259,7 @@ $(document).on('click', '.view #quit', function() {
 let quitView = false;
 
 $(document).on('click', '.view #userpic img', function() {
-  showModal('personal', 'id');
+  showModal('personal', 'id', '');
 });
 
 
@@ -265,11 +267,11 @@ $(document).on('click', '.personal #null', function() {
   closeModal();
 });
 
-function showModal(page, id) {
+function showModal(page, id, up) {
   $('html').css('cursor', 'wait');
   let modal = $('<div>').attr('id', id).addClass('modal').addClass(page);
   $('body').append(modal);
-  Page(page, id)
+  Page(page, id, up)
   setTimeout(function() {
     modal.css('opacity', 1);
     $('html').css('cursor', '');
@@ -288,17 +290,23 @@ function closeModal() {
   }, 500);
 }
 
-function Page(page, id) {
-  if (page == 'view') {viewPage(id);}
+function Page(page, id, up) {
+  if (page == 'view') {viewPage(id, up);}
   if (page == 'personal') {personalPage(id);}
 }
 
-function viewPage(doc){
+function viewPage(doc, up){
   $.get('/view' , {
     userID: userID,
     doc: doc
   }, (data) => {
     $('#' + doc + '.view').html(data[0]);
+    $.get('/viewUploader' , {
+      upid: up
+    }, (data) => {
+      $('#' + doc + '.view').find('#userpic img').attr('src', data[1]);
+      $('#' + doc + '.view').find('#up').text(data[0])
+    })
     active_like(data[1])
     active_rate(data[2])
     viewScroll()
