@@ -159,17 +159,3 @@ $('.confirm_button').on('click', function () {
         });
 
 })
-
-//個人專屬頁面
-fetch('/UserInfo_JSON')
-    .then(response => response.json())
-    .then(data => {
-        console.log("UserInfo_pic = ", data.picture);
-        var chineseName = data.given_name.replace(/[^\u4E00-\u9FA5]/g, '');
-        $('.pic img').attr('src', data.picture);
-        $('.nickname p').text(data.name);
-        $('.name p').text(chineseName);
-        $('.dep p').text(data.dep_year);
-        $('.fire').css('display', (data.award === 1 ? 'block' : 'none'))
-
-    })

@@ -232,8 +232,8 @@ app.get('/loading', (req, res) => {
 
 /* ////////////////////////////////////// */
 
-app.get('/others', (req, res) => {
-  fs.readFile('./dist/others.html', 'utf8', function (err, html) {
+app.get('/person', (req, res) => {
+  fs.readFile('./dist/' + req.query.tar + '.html', 'utf8', function (err, html) {
     if (err) throw err;
     fs.readFile('./user.json', 'utf8', function (err, user) {
       if (err) throw err;
@@ -250,28 +250,31 @@ app.get('/others', (req, res) => {
   })
 });
 
-app.get('/othersdoc', (req, res) => {
+app.get('/personaldoc', (req, res) => {
   fs.readFile('./document.json', 'utf8', function (err, data) {
     if (err) throw err;
     data = JSON.parse(data);
     let HTML = '';
+    let doccount = 0;
+    let doclikecount = 0;
     for (let id in data) {
       if (data[id].upid == req.query.userID){
         HTML += psdochtmlwrite(data[id]);
+        doccount += 1;
+        doclikecount += 1;
       }
     }
-    res.send(HTML);
+    res.send([HTML, doccount, doclikecount]);
   });
 });
 
 function psdochtmlwrite(data, id) {
-  console.log(data);
   const html = fs.readFileSync('./dist/html/persondoc.html', 'utf8');
   const $ = cheerio.load(html);
   $('.file_1').attr('id', id);
-  $('file_clas img').attr('src', './img/個人頁面_' + data.clas +'標籤.png');
-  $('file_detail p').eq(0).text(data.lec);
-  $('file_detail p').eq(0).text(data.year);
+  $('.file_clas img').attr('src', './img/個人頁面_' + data.clas +'標籤.png');
+  $('.file_detail p').eq(0).text(data.lec);
+  $('.file_detail p').eq(1).text(data.year);
   return $.html()
 }
 

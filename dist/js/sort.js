@@ -234,17 +234,7 @@ $(document).ready(function () {
   });
 
   $('.userpic').click(function () {
-    console.log("點擊個人頭像");
-    let userID;
-    $.get('/UserInfo', {
-    }, (data) => {
-      if (data) {
-        userID = data.family_name;
-      }
-    })
-
-    showModal('personal', 'id');
-
+    showModal('personal', userID, '');
   });
 
   /* ////////////////////////////////////// */
@@ -267,6 +257,7 @@ $(document).ready(function () {
   });
 
   function showModal(page, id, up) {
+    console.log(id);
     $('html').css('cursor', 'wait');
     let modal = $('<div>').attr('id', id).addClass('modal').addClass(page);
     $('body').append(modal);
@@ -317,12 +308,21 @@ $(document).ready(function () {
   }
 
   function personalPage(userid) {
-    // 這裡的ID為當前帳號的user學號
-    $.get('/personal', {
+    $.get('/person', {
       userID: userid,
+      tar: 'personal'
     }, (data) => {
       $('#' + userid + '.personal').html(data);
     });
+    setTimeout(function () {
+      $.get('/personaldoc', {
+        userID: userid,
+      }, (data) => {
+        $('#' + userid + '.personal').find('.file_row').html(data[0]);
+        $('#' + userid + '.personal').find('.upload_num p').text(data[1]);
+        $('#' + userid + '.personal').find('.like_num p').text(data[2]);
+      });
+    }, 100);
   }
 
   /* ////////////////////////////////////// */
@@ -337,17 +337,19 @@ $(document).ready(function () {
   });
 
   function othersPage(userid) {
-    $.get('/others', {
+    $.get('/person', {
       userID: userid,
+      tar: 'others'
     }, (data) => {
       $('#' + userid + '.others').html(data);
     });
     setTimeout(function () {
-      $.get('/othersdoc', {
+      $.get('/personaldoc', {
         userID: userid,
       }, (data) => {
-        console.log(data);
-        $('#' + userid + '.others').find('.file_row').html(data);
+        $('#' + userid + '.others').find('.file_row').html(data[0]);
+        $('#' + userid + '.others').find('.upload_num p').text(data[1]);
+        $('#' + userid + '.others').find('.like_num p').text(data[2]);
       });
     }, 100);
   }

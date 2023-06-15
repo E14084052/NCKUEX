@@ -469,6 +469,7 @@
 .personal .file_row {
   display: inline-block;
   flex-wrap: nowrap;
+  width: 100%;
 }
 
 .personal .file_1 {
